@@ -1,0 +1,24 @@
+# vim:ft=gitconfig
+
+[color]
+  ui = auto
+  grep = auto
+[color "diff"]
+  meta = magenta
+[color "grep"]
+  filename   = magenta
+  linenumber = green
+  match      = red bold
+[core]
+  excludesfile = ~/.gitignore
+  pager=less -FXRS
+[grep]
+  lineNumber = true
+[alias]
+  l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+[clean]
+  requireForce = false
+[push]
+  default = upstream
+[pull]
+  rebase = true
