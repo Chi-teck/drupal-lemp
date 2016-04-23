@@ -1,4 +1,4 @@
-# Docker LEMP stack for Drupal development.
+# Docker LEMP stack for Drupal development
 
 ## Running the container
 ```bash
