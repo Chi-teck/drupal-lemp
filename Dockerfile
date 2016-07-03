@@ -5,6 +5,7 @@ ENV MYSQL_PASS=123 \
     DRUSH_VERSION='8.1.2' \
     DCG_VERSION='1.9.1' \
     PHPMYADMIN_VERSION='4.6.3' \
+    MAILHOG_VERSION='v0.2.0' \
     HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
@@ -57,6 +58,9 @@ COPY bashrc /home/$HOST_USER_NAME/.bashrc
 COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 
+# Install MailHog.
+RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_386 && chmod +x MailHog_linux_386 && mv MailHog_linux_386 /usr/local/bin/mailhog
+
 # Install PhpMyAdmin
 RUN cd /tmp \
     && wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz \
@@ -93,9 +97,6 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
-# Copy cmd.sh.
-COPY cmd.sh /cmd.sh
-RUN chmod +x /cmd.sh
 
 # Copy mysql data to a temporary location. 
 RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
