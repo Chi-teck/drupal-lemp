@@ -1,11 +1,11 @@
-FROM ubuntu:xenial
+FROM debian:latest
 
 # Set variables.
 ENV MYSQL_PASS=123 \
-    DRUSH_VERSION='8.0.5' \
+    DRUSH_VERSION='8.1.2' \
     DCG_VERSION='1.9.1' \
-    PHPMYADMIN_VERSION='4.6.0' \
-    HOST_USER_NAME=vvv \
+    PHPMYADMIN_VERSION='4.6.3' \
+    HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
     TIMEZONE=Europe/Moscow \
@@ -14,12 +14,18 @@ ENV MYSQL_PASS=123 \
 # Set server timezone.
 RUN echo $TIMEZONE | tee /etc/timezone && dpkg-reconfigure tzdata
 
+# Install dotdeb repo.
+RUN apt-get update \
+    && apt-get install -y curl \
+    && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
+    && curl -sS https://www.dotdeb.org/dotdeb.gpg | apt-key add -
+
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo supervisor net-tools wget git vim curl zip unzip mc sqlite3 tree tmux ncdu \
+  sudo supervisor net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu \
   bash-completion nodejs nodejs-legacy npm nginx mysql-server mysql-client php7.0-xml \
   php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-cgi php7.0-fpm \
-  php7.0 php-xdebug
+  php7.0 php7.0-xdebug
   
 # Copy sudoers file
 COPY sudoers /etc/sudoers
@@ -32,6 +38,9 @@ RUN mkdir /run/php
 
 # Change mysql root password.
 RUN service mysql start && mysqladmin -u root password $MYSQL_PASS
+
+# Fix mysql directory onwer.
+#RUN chown -R mysql:mysql /var/lib/mysql
 
 # Change php settings.
 COPY 20-development-fpm.ini /etc/php/7.0/fpm/conf.d/20-development.ini
@@ -84,20 +93,21 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
-# Copy run.sh.
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
-
-# Copy www data to a temporary location. 
-RUN mkdir /var/_www && cp -R /var/www/* /var/_www && rm -r /var/_www/html
+# Copy cmd.sh.
+COPY cmd.sh /cmd.sh
+RUN chmod +x /cmd.sh
 
 # Copy mysql data to a temporary location. 
 RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
+# Copy cmd.sh.
+COPY mysql-init.sh /usr/bin/mysql-init.sh
+RUN chmod +x /usr/bin/mysql-init.sh
+
 # Set host user directory owner
 RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
 
-# Empty /tmp directory
+# Empty /tmp directory.
 RUN rm -rf /tmp/*
 
-CMD ["/run.sh"]. 
+CMD ["/usr/bin/supervisord", "-n"]
