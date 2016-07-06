@@ -2,7 +2,7 @@
 
 ## Running the container
 
-Basically you can run the container in two ways. The first one (classic) is exposing container services using port mapping.
+Basically you can run the container in two ways. The first one (classic) exposes container services using port mapping.
 ```bash
 #! /bin/bash
 
