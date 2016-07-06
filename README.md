@@ -17,7 +17,7 @@ The container is intended for local usage and should never be used in production
 
 ## Running the container
 
-Basically you can run the container in two ways. The first one (classic) is exposing container services through explicit port mapping.
+Basically you can run the container in two ways. The first one (classic) is exposing container services through the explicit port mapping.
 ```bash
 #! /bin/bash
 
@@ -65,3 +65,9 @@ The IP address may be whatever you like but make sure it belongs the subnet you 
 172.28.0.1 example.local
 ```
 New containers can be attached to the same network or you can create a distinct one for better isolation.
+
+## Available ports
+* 80 - Maiin HTTP
+* 8088 - PhpMyAdmin
+* 1025 - MailHot SMTP
+* 8025 - MailHog web UI
