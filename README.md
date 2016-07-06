@@ -36,8 +36,7 @@ docker run -dit \
 ```
 Having this done you can access web server index page by navigationg to the following url: http://localhost.
 
-The second way is a bit more advanced.
-First step is creating custom network:
+The second way is attaching the container to custom network.
 ```bash
 #! /bin/bash
 
