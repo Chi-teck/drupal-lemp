@@ -3,6 +3,18 @@
 ## Disclaimer
 The container is intended for local usage and should never be used in production environment.
 
+## Included software
+
+* Nginx,
+* MySQL
+* PHP 7
+* phpMyAdmin
+* xdebug
+* Composer
+* Drush, Drush completion, Drupalcs, Drupal Code Generator, Drupal Console
+* MailHog
+* NPM tools (Grunt, Gulp, Eslint, etc)
+
 ## Running the container
 
 Basically you can run the container in two ways. The first one (classic) is exposing container services through explicit port mapping.
