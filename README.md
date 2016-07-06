@@ -72,6 +72,10 @@ It is strongly recommended you connect to the container using **lemp** account.
 ```bash
 docker exec -itu lemp:www-data example bash
 ```
+You may want to create an aliase for less typing
+```bash
+echo 'alias example="docker start example && docker exec -itu lemp:www-data example bash"' >> ~/.bashrc
+```
 
 ## Available ports
 * 80 - Maiin HTTP
