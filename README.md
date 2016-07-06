@@ -9,7 +9,7 @@ Basically you can run the container in two ways. The first one (classic) exposes
 PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
 
-docker run -it \
+docker run -dit \
  -h $PROJECT_NAME \
  -p 80:80 \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
