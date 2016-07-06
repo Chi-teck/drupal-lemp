@@ -68,7 +68,8 @@ RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/M
 # Install PhpMyAdmin
 RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
     tar -xf phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
-    mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin
+    mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin && \
+    rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
