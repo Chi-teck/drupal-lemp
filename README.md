@@ -17,3 +17,4 @@ docker run -dit \
  --name $PROJECT_NAME \
   attr/drupal-lemp
 ```
+Having this done you can access web server index using the following url: http://localhost.
