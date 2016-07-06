@@ -61,6 +61,7 @@ RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
 COPY bashrc /home/$HOST_USER_NAME/.bashrc
 COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
+COPY gitignore /home/$HOST_USER_NAME/.gitignore
 
 # Install MailHog.
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
