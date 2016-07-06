@@ -45,7 +45,7 @@ docker run -dit \
  --name $PROJECT_NAME \
   attr/drupal-lemp
 ```
-The IP address may be whatever you like but make sure it belongs the subnet you have created before. You may want to write the IP address to you host file.
-```bash
-sudo echo '172.28.0.1 example.local' >> /etc/hosts
+The IP address may be whatever you like but make sure it belongs the subnet you have created before. It can be helpful to map the IP address to a hostname using hosts file.
+```
+172.28.0.1 example.local
 ```
