@@ -26,3 +26,15 @@ docker network create \
   --gateway=172.28.5.1 \
   my-net
 ```
+The IP addresses may be whatever you like.
+
+```bash
+docker run -it \
+ -h $PROJECT_NAME \
+ -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
+ -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
+ --net my \
+ --ip 192.28.0.1 \
+ --name $PROJECT_NAME \
+  attr/drupal-lemp
+```
