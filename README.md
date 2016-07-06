@@ -39,7 +39,7 @@ docker run -dit \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
  --net my \
- --ip 192.28.0.1 \
+ --ip 172.28.0.1 \
  --name $PROJECT_NAME \
   attr/drupal-lemp
 ```
