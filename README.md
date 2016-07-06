@@ -2,7 +2,7 @@
 
 **The container is intended for local usage and should never be used in production environment.**
 
-## Included software
+## What is inside
 
 * Nginx,
 * MySQL
@@ -61,7 +61,7 @@ docker run -dit \
 ```
 The IP address may be whatever you like but make sure it belongs the subnet you have created before. It can be helpful to map the IP address to a hostname using hosts file.
 ```
-172.28.0.1 example.local
+172.28.0.1 example.local
 ```
 New containers can be attached to the same network or you can create a distinct one for better isolation.
 
@@ -71,7 +71,7 @@ It is strongly recommended you connect to the container using **lemp** account.
 ```bash
 docker exec -itu lemp:www-data example bash
 ```
-You may want to create an aliase for less typing
+You may want to create an alias for less typing.
 ```bash
 echo 'alias example="docker start example && docker exec -itu lemp:www-data example bash"' >> ~/.bashrc
 ```
