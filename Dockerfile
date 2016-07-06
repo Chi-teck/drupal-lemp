@@ -89,6 +89,9 @@ RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-c
 # Install Drush.
 RUN wget https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
 
+# Install some extra Drush command.
+RUN sudo -u $HOST_USER_NAME drush dl registry_rebuild-7 && (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
+
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
