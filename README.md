@@ -68,7 +68,7 @@ New containers can be attached to the same network or you can create a distinct 
 
 ## Connecting to the container
 
-It is strongly recommended you connect to the container using *lemp* account.
+It is strongly recommended you connect to the container using **lemp** account.
 ```bash
 docker exec -itu lemp:www-data example bash
 ```
