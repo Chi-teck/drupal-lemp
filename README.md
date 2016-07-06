@@ -19,15 +19,15 @@ docker run -dit \
 ```
 Having this done you can access web server index page by navigationg to the following url: http://localhost.
 
-The second way is a bit more advanced. First you need to create custom network as follows:
+The second way is a bit more advanced.
+First step is creating custom network:
 ```bash
 docker network create \
   --subnet=172.28.0.0/16 \
   --gateway=172.28.0.254 \
   my-net
 ```
-The IP addresses may be whatever you like.
-
+Now the container can be created as follows:
 ```bash
 #! /bin/bash
 
@@ -43,3 +43,4 @@ docker run -dit \
  --name $PROJECT_NAME \
   attr/drupal-lemp
 ```
+The IP address may be whatever you like but make sure it belongs the subnet you have created before.
