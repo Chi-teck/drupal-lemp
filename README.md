@@ -34,7 +34,7 @@ The IP addresses may be whatever you like.
 PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
 
-docker run -it \
+docker run -dit \
  -h $PROJECT_NAME \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
