@@ -29,6 +29,11 @@ docker network create \
 The IP addresses may be whatever you like.
 
 ```bash
+#! /bin/bash
+
+PROJECTS_DIR=/var/docker/projects/
+PROJECT_NAME=example
+
 docker run -it \
  -h $PROJECT_NAME \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
