@@ -66,6 +66,13 @@ The IP address may be whatever you like but make sure it belongs the subnet you 
 ```
 New containers can be attached to the same network or you can create a distinct one for better isolation.
 
+## Connecting to the container
+
+It is strongly recommended you connect to the container using *lemp* account.
+```bash
+docker exec -itu lemp:www-data example bash
+```
+
 ## Available ports
 * 80 - Maiin HTTP
 * 8088 - PhpMyAdmin
