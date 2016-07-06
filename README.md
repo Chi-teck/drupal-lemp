@@ -12,7 +12,7 @@
 * Composer
 * Drush, Drush completion, Drupalcs, Drupal Code Generator, Drupal Console
 * MailHog
-* NPM tools (Grunt, Gulp, Eslint, etc)
+* NPM tools (Grunt, Gulp, ESlint, etc)
 
 ## Running the container
 
