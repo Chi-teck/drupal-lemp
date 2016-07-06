@@ -63,7 +63,12 @@ COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 
 # Install MailHog.
-RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_386 && chmod +x MailHog_linux_386 && mv MailHog_linux_386 /usr/local/bin/mailhog
+RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
+	chmod +x MailHog_linux_amd64 && \
+	mv MailHog_linux_amd64 /usr/local/bin/mailhog && \
+	wget https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 && \
+	chmod +x mhsendmail_linux_amd64 && \
+	mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
 # Install PhpMyAdmin
 RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
