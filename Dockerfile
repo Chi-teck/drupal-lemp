@@ -24,7 +24,7 @@ RUN apt-get update \
 # Install required packages.
 RUN apt-get update && apt-get -y install \
   sudo supervisor net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu \
-  bash-completion nodejs nodejs-legacy npm nginx mysql-server mysql-client php7.0-xml \
+  bash-completion nginx mysql-server mysql-client php7.0-xml \
   php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-cgi php7.0-fpm \
   php7.0 php7.0-xdebug
   
@@ -98,6 +98,12 @@ RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DC
 
 # Install Drupal Console.
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
+
+# Install Node.js and NPM.
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
+
+# Install NPM tools.
+RUN npm i -g grunt-cli gulp-cli eslint csslint drupal-project-loader
 
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
