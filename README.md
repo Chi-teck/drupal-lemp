@@ -36,7 +36,7 @@ docker run -dit \
 ```
 Having this done you can access web server index page by navigating to the following url: http://localhost.
 
-The second way is attaching the container to custom network.
+The second way require you to create custom docker network.
 ```bash
 #! /bin/bash
 
@@ -61,11 +61,11 @@ docker run -dit \
  --name $PROJECT_NAME \
   attr/drupal-lemp
 ```
-The IP address may be whatever you like but make sure it belongs the subnet you have created before. It can be helpful to map the IP address to a hostname using hosts file.
+The IP address may be whatever you like but make sure it belongs the subnet you created before. It can be helpful to map the IP address to a hostname using hosts file.
 ```
 172.28.0.1 example.local
 ```
-New containers can be attached to the same network or you can create a distinct one for better isolation.
+New containers can be attached to the same network or to a distinct one for better isolation.
 
 ## Connecting to the container
 
