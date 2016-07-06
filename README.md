@@ -4,13 +4,16 @@
 
 ## What is inside
 
-* Nginx,
+* Nginx
 * MySQL
 * PHP 7
 * phpMyAdmin
 * Xdebug
 * Composer
-* Drush, Drush completion, Drupalcs, Drupal Code Generator, Drupal Console
+* Drush
+* Drupalcs
+* Drupal Code Generator
+* Drupal Console
 * MailHog
 * NPM tools (Grunt, Gulp, ESlint, etc)
 
