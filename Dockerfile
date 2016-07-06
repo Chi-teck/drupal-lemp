@@ -102,6 +102,9 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
+# Enable supervisor control to everyone.
+RUN sed -i -e 's/chmod=0700/chmod=0777/g' /etc/supervisor/supervisord.conf
+
 # Copy mysql data to a temporary location. 
 RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
