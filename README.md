@@ -1,7 +1,7 @@
 # Docker LEMP stack for Drupal development
 
 ## Disclaimer
-The container is intended for local usage and should be never used in production environment.
+The container is intended for local usage and should never be used in production environment.
 
 ## Running the container
 
