@@ -23,7 +23,7 @@ The second way is a bit more advanced. First you need to create custom network a
 ```bash
 docker network create \
   --subnet=172.28.0.0/16 \
-  --gateway=172.28.5.1 \
+  --gateway=172.28.0.1 \
   my-net
 ```
 The IP addresses may be whatever you like.
