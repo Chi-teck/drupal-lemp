@@ -22,6 +22,8 @@ Having this done you can access web server index page by navigationg to the foll
 The second way is a bit more advanced.
 First step is creating custom network:
 ```bash
+#! /bin/bash
+
 docker network create \
   --subnet=172.28.0.0/16 \
   --gateway=172.28.0.254 \
