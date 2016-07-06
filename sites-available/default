@@ -34,11 +34,9 @@ server {
   location ~ \.php$ {
     include snippets/fastcgi-php.conf;
     fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-    fastcgi_buffers 16 16k; 
-    fastcgi_buffer_size 32k;
   }
   
-  location ~ /\.ht {
+  location ~ /\. {
     deny all;
   }
 

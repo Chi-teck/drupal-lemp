@@ -113,3 +113,5 @@ export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;36m\]:\[\e[0m\]\[\e[00;33m\]\w\[\
 
 alias drupalcs="phpcs --colors --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,js,css,info,txt'"
 
+supervisorctl status
+

@@ -32,13 +32,17 @@ RUN apt-get update && apt-get -y install \
 COPY sudoers /etc/sudoers
   
 # Update default nginx configuration.
-COPY default /etc/nginx/sites-available/default
+COPY sites-available/default /etc/nginx/sites-available/default
 
 # Create runtime directory for php-fpm.
 RUN mkdir /run/php
 
 # Change mysql root password.
 RUN service mysql start && mysqladmin -u root password $MYSQL_PASS
+
+# Install mysql-init.sh script.
+COPY mysql-init.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/mysql-init.sh
 
 # Fix mysql directory onwer.
 #RUN chown -R mysql:mysql /var/lib/mysql
@@ -62,19 +66,19 @@ COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_386 && chmod +x MailHog_linux_386 && mv MailHog_linux_386 /usr/local/bin/mailhog
 
 # Install PhpMyAdmin
-RUN cd /tmp \
-    && wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz \
-    && tar -xf phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz \
-    && mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /var/www/phpmyadmin
+RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
+    tar -xf phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
+    mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin
+COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
+RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Install convert.php
-RUN cd /tmp \
-    && wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php \
-    && chmod +x convert.php \
-    && mv convert.php /usr/local/bin/convert.php
+RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
+    chmod +x convert.php && \
+    mv convert.php /usr/local/bin/convert.php
      
 # Install Drush.
 RUN wget https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
@@ -97,15 +101,10 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
-
 # Copy mysql data to a temporary location. 
 RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
-# Copy cmd.sh.
-COPY mysql-init.sh /usr/bin/mysql-init.sh
-RUN chmod +x /usr/bin/mysql-init.sh
-
-# Set host user directory owner
+# Set host user directory owner.
 RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
 
 # Empty /tmp directory.
