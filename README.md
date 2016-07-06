@@ -49,3 +49,4 @@ The IP address may be whatever you like but make sure it belongs the subnet you 
 ```
 172.28.0.1 example.local
 ```
+New containers can be attached to the same network or you can create a distinct one for better isolation.
