@@ -1,5 +1,8 @@
 # Docker LEMP stack for Drupal development
 
+## Disclaimer
+The container is intendent for local usage and should be never used in production environment.
+
 ## Running the container
 
 Basically you can run the container in two ways. The first one (classic) is exposing container services through explicit port mapping.
