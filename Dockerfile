@@ -66,7 +66,7 @@ COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
 	chmod +x MailHog_linux_amd64 && \
 	mv MailHog_linux_amd64 /usr/local/bin/mailhog && \
-	wget https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 && \
+	wget https://github.com/mailhog/mhsendmail/releases/download/$MAILHOG_VERSION/mhsendmail_linux_amd64 && \
 	chmod +x mhsendmail_linux_amd64 && \
 	mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
