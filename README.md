@@ -8,7 +8,7 @@
 * MySQL
 * PHP 7
 * phpMyAdmin
-* xdebug
+* Xdebug
 * Composer
 * Drush, Drush completion, Drupalcs, Drupal Code Generator, Drupal Console
 * MailHog
