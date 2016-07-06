@@ -2,7 +2,7 @@
 
 ## Running the container
 
-Basically you can run the container in two ways. The first on (classic) is exposing container services using port mapping.
+Basically you can run the container in two ways. The first one (classic) is exposing container services using port mapping.
 ```bash
 #! /bin/bash
 
@@ -15,5 +15,5 @@ docker run -it \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
  --name $PROJECT_NAME \
-  addt/drupal-lemp
+  attr/drupal-lemp
 ```
