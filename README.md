@@ -34,7 +34,7 @@ docker run -dit \
  --name $PROJECT_NAME \
  attr/drupal-lemp
 ```
-Having this done you can access web server index page by navigationg to the following url: http://localhost.
+Having this done you can access web server index page by navigating to the following url: http://localhost.
 
 The second way is attaching the container to custom network.
 ```bash
