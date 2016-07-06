@@ -40,21 +40,13 @@ server {
     deny all;
   }
 
-  #-- Sites
+  # -- Sites.
   location /d8/docroot {
-    try_files $uri @d8_rewrite;
+    try_files $uri /d8/docroot/index.php?$query_string;
   }
-
-  location @d8_rewrite {
-    rewrite ^ /d8/docroot/index.php;
-  }
-
+  
   location /d7/docroot {
-    try_files $uri @d7_rewrite;
-  }
-
-  location @d7_rewrite {
-    rewrite ^ /d7/docroot/index.php;
+    try_files $uri /d7/docroot/index.php?$query_string;
   }
 
 }
