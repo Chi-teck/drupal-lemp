@@ -33,6 +33,7 @@ COPY sudoers /etc/sudoers
   
 # Update default nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
+COPY sites-available/default-locations /etc/nginx/sites-available/default-locations
 
 # Create runtime directory for php-fpm.
 RUN mkdir /run/php
