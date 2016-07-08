@@ -45,9 +45,6 @@ RUN service mysql start && mysqladmin -u root password $MYSQL_PASS
 COPY mysql-init.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/mysql-init.sh
 
-# Fix mysql directory onwer.
-#RUN chown -R mysql:mysql /var/lib/mysql
-
 # Change php settings.
 COPY 20-development-fpm.ini /etc/php/7.0/fpm/conf.d/20-development.ini
 COPY 20-development-cli.ini /etc/php/7.0/cli/conf.d/20-development.ini
