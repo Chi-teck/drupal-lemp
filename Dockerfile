@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:jessie
 
 # Set variables.
 ENV MYSQL_PASS=123 \
