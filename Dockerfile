@@ -5,6 +5,7 @@ ENV MYSQL_PASS=123 \
     DRUSH_VERSION='8.1.2' \
     DCG_VERSION='1.9.1' \
     PHPMYADMIN_VERSION='4.6.3' \
+    ADMINER_VERSION='4.2.5' \
     MAILHOG_VERSION='v0.2.0' \
     HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
@@ -83,6 +84,12 @@ RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYA
     rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
+
+# Install Adminer
+RUN mkdir /usr/share/adminer && \
+    wget -O /usr/share/adminer/adminer.php https://www.adminer.org/static/download/$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
+COPY sites-available/adminer /etc/nginx/sites-available/adminer
+RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer   
 
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer

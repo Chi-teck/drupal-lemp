@@ -8,6 +8,7 @@
 * MySQL
 * PHP 7
 * phpMyAdmin
+* Adminer
 * Xdebug
 * Composer
 * Drush
@@ -81,9 +82,10 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 ## Available ports
 * 80 - Main HTTP
 * 3306 - MySql
-* 8088 - PhpMyAdmin
 * 1025 - MailHot SMTP
 * 8025 - MailHog web UI
+* 8088 - PhpMyAdmin
+* 8089 - Adminer
 
 ## Access
 * Host user name - lemp

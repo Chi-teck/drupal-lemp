@@ -1,0 +1,14 @@
+server {
+
+  listen 8089;
+
+  root /usr/share/adminer;
+
+  index adminer.php;
+
+  location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+  }
+  
+}
