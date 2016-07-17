@@ -82,6 +82,8 @@ RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYA
     tar -xf phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
     mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin && \
     rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz
+COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
+RUN sed -i "s/root_pass/$MYSQL_PASS/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
