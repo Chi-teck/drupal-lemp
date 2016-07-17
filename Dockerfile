@@ -92,7 +92,8 @@ RUN mkdir /home/$HOST_USER_NAME/.drush && chown $HOST_USER_NAME:$HOST_USER_NAME 
 COPY drushrc.php /home/$HOST_USER_NAME/.drush/drushrc.php
 
 # Install some extra Drush command.
-RUN sudo -u $HOST_USER_NAME drush dl registry_rebuild-7 && (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
+RUN drush dl --destination=/home/$HOST_USER_NAME/.drush registry_rebuild-7 site_audit && \
+   (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
 
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
