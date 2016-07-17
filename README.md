@@ -84,3 +84,8 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 * 8088 - PhpMyAdmin
 * 1025 - MailHot SMTP
 * 8025 - MailHog web UI
+
+## Access
+* Host user name - lemp
+* Host user password - 123
+* MySql root password - 123
