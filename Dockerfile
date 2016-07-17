@@ -42,6 +42,12 @@ RUN mkdir /run/php
 # Change mysql root password.
 RUN service mysql start && mysqladmin -u root password $MYSQL_PASS
 
+# Disable bind-address.
+RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf
+
+# Grant access to root user from any host.
+RUN service mysql start && mysql -p$MYSQL_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123' WITH GRANT OPTION";
+
 # Install mysql-init.sh script.
 COPY mysql-init.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/mysql-init.sh
