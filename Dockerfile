@@ -23,10 +23,11 @@ RUN apt-get update \
 
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo supervisor net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu \
-  html2text bash-completion nginx mysql-server mysql-client php7.0-xml \
-  php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-cgi php7.0-fpm \
-  php7.0 php7.0-xdebug
+  sudo supervisor net-tools wget git vim zip unzip mc sqlite3 tree \
+  tmux ncdu html2text bash-completion nginx mysql-server mysql-client \
+  php7.0-xml php7.0-mysql php7.0-sqlite3 php7.0-curl php7.0-gd \
+  php7.0-json php7.0-mbstring php7.0-cgi php7.0-fpm php7.0 \
+  php7.0-xdebug
   
 # Copy sudoers file
 COPY sudoers /etc/sudoers
