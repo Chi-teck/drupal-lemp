@@ -113,7 +113,7 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
 
 # Install NPM tools.
-RUN npm i -g grunt-cli gulp-cli eslint csslint drupal-project-loader
+RUN npm i -g grunt-cli gulp-cli bower eslint csslint drupal-project-loader
 
 # Add supervisor configuration.
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf

@@ -15,7 +15,7 @@
 * Drupal Code Generator
 * Drupal Console
 * MailHog
-* NPM tools (Grunt, Gulp, ESlint, etc)
+* NPM tools (Grunt, Gulp, Bower, etc)
 
 ## Running the container
 
