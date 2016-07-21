@@ -1,8 +1,0 @@
-location /d8/docroot {
-  try_files $uri /d8/docroot/index.php?$query_string;
-}
-
-location /d7/docroot {
-  try_files $uri /d7/docroot/index.php?$query_string;
-}
-

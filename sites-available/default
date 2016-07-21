@@ -40,5 +40,8 @@ server {
     deny all;
   }
 
-  include sites-available/default-locations;
+  location ~ (.*/docroot) {
+    try_files $uri $1/index.php?$query_string;
+  }
+
 }
