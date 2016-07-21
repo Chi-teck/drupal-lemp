@@ -2,7 +2,7 @@ FROM debian:jessie
 
 # Set variables.
 ENV MYSQL_PASS=123 \
-    DRUSH_VERSION='8.1.2' \
+    DRUSH_VERSION='8.1.3' \
     DCG_VERSION='1.9.1' \
     PHPMYADMIN_VERSION='4.6.3' \
     ADMINER_VERSION='4.2.5' \
