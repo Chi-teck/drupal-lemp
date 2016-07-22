@@ -6,6 +6,11 @@ if [ ! "$(ls -A "/var/lib/mysql")" ]; then
   chown -R mysql:mysql /var/lib/mysql
 fi
 
+# Change document root owner.
+if [ ! "$(ls -A "/var/www")" ]; then
+  chown $HOST_USER_NAME:$HOST_USER_NAME /var/www
+fi
+
 echo 'Starting nginx...'
 service nginx start
 
