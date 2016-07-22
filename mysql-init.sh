@@ -5,6 +5,4 @@ if [ ! "$(ls -A "/var/lib/mysql")" ]; then
   chown -R mysql:mysql /var/lib/mysql
 fi
 
-rm -r /var/lib/_mysql
-
 exit 0;
