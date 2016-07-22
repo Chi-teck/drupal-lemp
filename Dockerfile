@@ -1,7 +1,8 @@
 FROM debian:jessie
 
 # Set variables.
-ENV MYSQL_PASS=123 \
+ENV MYSQL_ROOT_PASS=123 \
+    DUMB_INIT_VERSION='1.1.1' \
     DRUSH_VERSION='8.1.3' \
     DCG_VERSION='1.9.1' \
     PHPMYADMIN_VERSION='4.6.3' \
@@ -24,35 +25,36 @@ RUN apt-get update \
 
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo supervisor net-tools wget git vim zip unzip mc sqlite3 tree \
-  tmux ncdu html2text bash-completion nginx mysql-server mysql-client \
-  php7.0-xml php7.0-mysql php7.0-sqlite3 php7.0-curl php7.0-gd \
-  php7.0-json php7.0-mbstring php7.0-cgi php7.0-fpm php7.0 \
-  php7.0-xdebug
+  sudo net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu \
+  html2text bash-completion nginx mysql-server mysql-client php7.0-xml \
+  php7.0-mysql php7.0-sqlite3 php7.0-curl php7.0-gd php7.0-json \
+  php7.0-mbstring php7.0-cgi php7.0-fpm php7.0 php7.0-xdebug
+
+# Install dumb-init  .
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb
   
-# Copy sudoers file
+# Copy sudoers file.
 COPY sudoers /etc/sudoers
   
 # Update default nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
 
-# Create runtime directory for php-fpm.
-RUN mkdir /run/php
-
 # Change mysql root password.
-RUN service mysql start && mysqladmin -u root password $MYSQL_PASS
+RUN service mysql start && mysqladmin -u root password $MYSQL_ROOT_PASS
+
+# Grant access to debian user.
+RUN DEBIAN_PASS=$(cat /etc/mysql/debian.cnf | grep -m1 password | sed 's/password = //') && \
+	service mysql start && \
+	mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '$DEBIAN_PASS' WITH GRANT OPTION";
 
 # Disable bind-address.
 RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf
 
 # Grant access to root user from any host.
-RUN service mysql start && mysql -p$MYSQL_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123' WITH GRANT OPTION";
+RUN service mysql start && \
+    mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASS' WITH GRANT OPTION";
 
-# Install mysql-init.sh script.
-COPY mysql-init.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/mysql-init.sh
-
-# Change php settings.
+# Change PHP settings.
 COPY 20-development-fpm.ini /etc/php/7.0/fpm/conf.d/20-development.ini
 COPY 20-development-cli.ini /etc/php/7.0/cli/conf.d/20-development.ini
 COPY 20-xdebug.ini /etc/php/7.0/fpm/conf.d/20-xdebug.ini
@@ -82,7 +84,7 @@ RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYA
     mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin && \
     rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz
 COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
-RUN sed -i "s/root_pass/$MYSQL_PASS/" /usr/share/phpmyadmin/config.inc.php
+RUN sed -i "s/root_pass/$MYSQL_ROOT_PASS/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
@@ -130,12 +132,6 @@ RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y
 # Install NPM tools.
 RUN npm i -g grunt-cli gulp-cli bower eslint csslint drupal-project-loader
 
-# Add supervisor configuration.
-COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
-
-# Enable supervisor control to everyone.
-RUN sed -i -e 's/chmod=0700/chmod=0777/g' /etc/supervisor/supervisord.conf
-
 # Copy mysql data to a temporary location. 
 RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
@@ -145,4 +141,9 @@ RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
 # Empty /tmp directory.
 RUN rm -rf /tmp/*
 
-CMD ["/usr/bin/supervisord", "-n"]
+# Install cmd.sh file.
+COPY cmd.sh /root/cmd.sh
+RUN chmod +x /root/cmd.sh
+
+# Default command..
+CMD ["dumb-init", "-c", "--", "/root/cmd.sh"]
