@@ -126,6 +126,10 @@ RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DC
 # Install Drupal Console.
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
 
+# Install d8-install script.
+COPY d8-install /usr/local/bin/d8-install
+RUN chmod +x /usr/local/bin/d8-install
+
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
 
