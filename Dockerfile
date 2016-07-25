@@ -97,6 +97,10 @@ RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
+# Install PHPUnit,
+RUN sudo -u $HOST_USER_NAME composer global require "phpunit/phpunit"
+RUN echo 'export PATH=$HOST_USER_NAME/.composer/vendor/bin:$PATH' >> /home/$HOST_USER_NAME/.bashrc
+
 # Install convert.php
 RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
     chmod +x convert.php && \
