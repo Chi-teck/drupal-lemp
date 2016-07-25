@@ -16,4 +16,6 @@ drush pmu --root=$SITE_DOCROOT -y automated_cron breakpoint color help history q
 
 drush dl --root=$SITE_DOCROOT admin_toolbar toolbar_anti_flicker && drush en --root=$SITE_DOCROOT -y admin_toolbar admin_toolbar_tools toolbar_anti_flicker && \
 
+drush dl --root=$SITE_DOCROOT -y wd-dell all
+
 echo Done!
