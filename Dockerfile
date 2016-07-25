@@ -30,7 +30,7 @@ RUN apt-get update && apt-get -y install \
   php7.0-mysql php7.0-sqlite3 php7.0-curl php7.0-gd php7.0-json \
   php7.0-mbstring php7.0-cgi php7.0-fpm php7.0 php7.0-xdebug
 
-# Install dumb-init  .
+# Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb
   
 # Copy sudoers file.
