@@ -81,7 +81,7 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 
 ## Available ports
 * 80 - Main HTTP
-* 3306 - MySql
+* 3306 - MySQL
 * 1025 - MailHog SMTP
 * 8025 - MailHog web UI
 * 8088 - PhpMyAdmin
