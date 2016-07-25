@@ -92,7 +92,7 @@ RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyad
 RUN mkdir /usr/share/adminer && \
     wget -O /usr/share/adminer/adminer.php https://www.adminer.org/static/download/$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
 COPY sites-available/adminer /etc/nginx/sites-available/adminer
-RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer   
+RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
