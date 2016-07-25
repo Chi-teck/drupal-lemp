@@ -90,4 +90,4 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 ## Access
 * Host user name - lemp
 * Host user password - 123
-* MySql root password - 123
+* MySQL root password - 123
