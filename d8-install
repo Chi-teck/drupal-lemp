@@ -12,8 +12,8 @@ drush dl --destination=$SERVER_DOCROOT/$1 --drupal-project-rename=docroot && \
 
 drush si --root=$SITE_DOCROOT --db-url=mysql://root:$MYSQL_ROOT_PASS@localhost/$1 --site-name=$1-$HOSTNAME --account-name=admin --account-pass=$HOST_USER_PASS && \
 
-drush dl --root=$SITE_DOCROOT admin_toolbar toolbar_anti_flicker && drush en --root=$SITE_DOCROOT -y admin_toolbar admin_toolbar_tools toolbar_anti_flicker && \
-
 drush pmu --root=$SITE_DOCROOT -y automated_cron breakpoint color help history quick_edit rdf search tour update && \
+
+drush dl --root=$SITE_DOCROOT admin_toolbar toolbar_anti_flicker && drush en --root=$SITE_DOCROOT -y admin_toolbar admin_toolbar_tools toolbar_anti_flicker && \
 
 echo Done!
