@@ -118,10 +118,10 @@ RUN drush dl --destination=/home/$HOST_USER_NAME/.drush registry_rebuild-7 site_
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install phpcs
+# Install phpcs.
 RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && chmod +x phpcs.phar && mv phpcs.phar /usr/local/bin/phpcs
 
-# Install drupalcs
+# Install drupalcs.
 RUN cd /usr/share/php && drush dl coder && phpcs --config-set installed_paths /usr/share/php/coder/coder_sniffer
 
 # Install DCG.
