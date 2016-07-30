@@ -81,8 +81,8 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 
 ## Available ports
 * 80 - Main HTTP
-* 3306 - MySql
-* 1025 - MailHot SMTP
+* 3306 - MySQL
+* 1025 - MailHog SMTP
 * 8025 - MailHog web UI
 * 8088 - PhpMyAdmin
 * 8089 - Adminer
@@ -90,4 +90,4 @@ echo 'alias example="docker start example && docker exec -itu lemp:www-data exam
 ## Access
 * Host user name - lemp
 * Host user password - 123
-* MySql root password - 123
+* MySQL root password - 123
