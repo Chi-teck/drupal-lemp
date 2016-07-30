@@ -130,6 +130,15 @@ RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DC
 # Install Drupal Console.
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
 
+# Install Symfony console autocomplete.
+RUN sudo -u $HOST_USER_NAME composer global require bamarni/symfony-console-autocomplete
+
+# Install DCG completions.
+RUN sudo -u $HOST_USER_NAME /home/$HOST_USER_NAME/.composer/vendor/bin/symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
+
+# Install Composer completions.
+RUN sudo -u $HOST_USER_NAME /home/$HOST_USER_NAME/.composer/vendor/bin/symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
+
 # Install d8-install script.
 COPY d8-install /usr/local/bin/d8-install
 RUN chmod +x /usr/local/bin/d8-install
