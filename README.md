@@ -60,6 +60,7 @@ docker run -dit \
  --net my-net \
  --ip 172.28.0.1 \
  --name $PROJECT_NAME \
+ --group-add www-data \
   attr/drupal-lemp
 ```
 The IP address may be whatever you like but make sure it belongs the subnet you created before. It can be helpful to map the IP address to a hostname using system hosts file.
