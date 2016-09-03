@@ -33,6 +33,7 @@ docker run -dit \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
  --name $PROJECT_NAME \
+ --group-add sudo \
  --group-add www-data \
  attr/drupal-lemp
 ```
@@ -61,6 +62,7 @@ docker run -dit \
  --net my-net \
  --ip 172.28.0.1 \
  --name $PROJECT_NAME \
+ --group-add sudo \
  --group-add www-data \
   attr/drupal-lemp
 ```
