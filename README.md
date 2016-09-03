@@ -33,6 +33,7 @@ docker run -dit \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
  --name $PROJECT_NAME \
+ --group-add www-data \
  attr/drupal-lemp
 ```
 Having this done you can access web server index page by navigating to the following url: http://localhost.
