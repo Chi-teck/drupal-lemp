@@ -77,7 +77,7 @@ docker exec -itu lemp:www-data example bash
 ```
 You may want to create an alias for less typing.
 ```bash
-echo 'alias example="docker start example && docker exec -itu lemp:www-data example bash"' >> ~/.bashrc
+echo 'alias example="docker start example && docker exec -itu lemp example bash"' >> ~/.bashrc
 ```
 
 ## Available ports
