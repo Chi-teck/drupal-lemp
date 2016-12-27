@@ -8,6 +8,7 @@ ENV MYSQL_ROOT_PASS=123 \
     PHPMYADMIN_VERSION='4.6.5.2' \
     ADMINER_VERSION='4.2.5' \
     MAILHOG_VERSION='v0.2.1' \
+    MHSENDMAIL_VERSION='v0.2.0' \
     HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
@@ -74,7 +75,7 @@ COPY gitignore /home/$HOST_USER_NAME/.gitignore
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
     chmod +x MailHog_linux_amd64 && \
     mv MailHog_linux_amd64 /usr/local/bin/mailhog && \
-    wget https://github.com/mailhog/mhsendmail/releases/download/$MAILHOG_VERSION/mhsendmail_linux_amd64 && \
+    wget https://github.com/mailhog/mhsendmail/releases/download/$MHSENDMAIL_VERSION/mhsendmail_linux_amd64 && \
     chmod +x mhsendmail_linux_amd64 && \
     mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
