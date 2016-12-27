@@ -44,8 +44,8 @@ RUN service mysql start && mysqladmin -u root password $MYSQL_ROOT_PASS
 
 # Grant access to debian user.
 RUN DEBIAN_PASS=$(cat /etc/mysql/debian.cnf | grep -m1 password | sed 's/password = //') && \
-	service mysql start && \
-	mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '$DEBIAN_PASS' WITH GRANT OPTION";
+    service mysql start && \
+    mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '$DEBIAN_PASS' WITH GRANT OPTION";
 
 # Disable bind-address.
 RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf
@@ -72,11 +72,11 @@ COPY gitignore /home/$HOST_USER_NAME/.gitignore
 
 # Install MailHog.
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
-	chmod +x MailHog_linux_amd64 && \
-	mv MailHog_linux_amd64 /usr/local/bin/mailhog && \
-	wget https://github.com/mailhog/mhsendmail/releases/download/$MAILHOG_VERSION/mhsendmail_linux_amd64 && \
-	chmod +x mhsendmail_linux_amd64 && \
-	mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
+    chmod +x MailHog_linux_amd64 && \
+    mv MailHog_linux_amd64 /usr/local/bin/mailhog && \
+    wget https://github.com/mailhog/mhsendmail/releases/download/$MAILHOG_VERSION/mhsendmail_linux_amd64 && \
+    chmod +x mhsendmail_linux_amd64 && \
+    mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
 # Install PhpMyAdmin
 RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
