@@ -33,6 +33,8 @@ docker run -dit \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
  --name $PROJECT_NAME \
+ --group-add sudo \
+ --group-add www-data \
  attr/drupal-lemp
 ```
 Having this done you can access web server index page by navigating to the following url: http://localhost.
@@ -60,6 +62,8 @@ docker run -dit \
  --net my-net \
  --ip 172.28.0.1 \
  --name $PROJECT_NAME \
+ --group-add sudo \
+ --group-add www-data \
   attr/drupal-lemp
 ```
 The IP address may be whatever you like but make sure it belongs the subnet you created before. It can be helpful to map the IP address to a hostname using system hosts file.
@@ -76,7 +80,7 @@ docker exec -itu lemp:www-data example bash
 ```
 You may want to create an alias for less typing.
 ```bash
-echo 'alias example="docker start example && docker exec -itu lemp:www-data example bash"' >> ~/.bashrc
+echo 'alias example="docker start example && docker exec -itu lemp example bash"' >> ~/.bashrc
 ```
 
 ## Available ports
