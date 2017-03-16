@@ -3,10 +3,10 @@ FROM debian:jessie
 # Set variables.
 ENV MYSQL_ROOT_PASS=123 \
     DUMB_INIT_VERSION='1.2.0' \
-    DRUSH_VERSION='8.1.8' \
-    DCG_VERSION='1.14.0' \
-    PHPMYADMIN_VERSION='4.6.5.2' \
-    ADMINER_VERSION='4.2.5' \
+    DRUSH_VERSION='8.1.10' \
+    DCG_VERSION='1.15.1' \
+    PHPMYADMIN_VERSION='4.7.0-rc1' \
+    ADMINER_VERSION='4.3.0' \
     MAILHOG_VERSION='v0.2.1' \
     MHSENDMAIL_VERSION='v0.2.0' \
     HOST_USER_NAME=lemp \
@@ -80,10 +80,10 @@ RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/M
     mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
 # Install PhpMyAdmin
-RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
-    tar -xf phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz && \
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.zip && \
+    unzip phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.zip && \
     mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin && \
-    rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.tar.gz
+    rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.zip
 COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
 RUN sed -i "s/root_pass/$MYSQL_ROOT_PASS/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
