@@ -26,10 +26,10 @@ RUN apt-get update \
 
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu \
-  html2text bash-completion nginx mysql-server mysql-client php7.0-xml \
-  php7.0-mysql php7.0-sqlite3 php7.0-curl php7.0-gd php7.0-json \
-  php7.0-mbstring php7.0-cgi php7.0-fpm php7.0 php7.0-xdebug
+  sudo net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu html2text \
+  bash-completion nginx mysql-server mysql-client php7.0-xml php7.0-mysql \
+  php7.0-sqlite3 php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-cgi \
+  php7.0-fpm php7.0 php7.0-xdebug silversearcher-ag bsdmainutils man
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb
