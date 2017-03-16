@@ -154,4 +154,6 @@ alias drupalcs="phpcs --colors --standard=Drupal --extensions='php,module,inc,in
 
 echo -e "\e[96mWELCOME TO DRUPAL LEMP DEVELOPMENT STACK!\e[0m"
 
+alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
+
 cd /var/www
