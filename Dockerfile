@@ -31,7 +31,7 @@ RUN apt-get update && apt-get -y install \
   php$PHP_VERSION-fpm php$PHP_VERSION php$PHP_VERSION-xdebug silversearcher-ag bsdmainutils man
 
 # Install dumb-init.
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb && rm dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
 
 # Copy sudoers file.
 COPY sudoers /etc/sudoers
