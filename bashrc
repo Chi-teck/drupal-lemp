@@ -109,7 +109,7 @@ function dcd {
 function parse_git_branch {
    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\[\1\]/' 
 } 
-export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;36m\]:\[\e[0m\]\[\e[00;33m\]\w\[\e[0m\]\[\e[00;36m\]\$(parse_git_branch)\[\e[0m\]\[\e[00;37m\]-> \[\e[0m\]"
+export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;34m\]:\[\e[0m\]\[\e[00;33m\]\w\[\e[0m\]\[\e[00;36m\]\$(parse_git_branch)\[\e[0m\]\n\[\e[01;30m\]$ \[\e[0m\]"
 
 alias drupalcs="phpcs --colors --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,js,css,info,txt'"
 
