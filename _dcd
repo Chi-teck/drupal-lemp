@@ -1,0 +1,44 @@
+_dcd() {
+  # Complete only fist argument.
+  if [ "$COMP_CWORD" -gt 1 ]; then
+    return
+  fi
+
+  local drupal_root drupal_version current_dir
+
+  current_dir=$(pwd);
+  while true; do
+    if [ $current_dir == '/' ]; then
+      return 1;
+    fi
+    # Drupal 8 root.
+    if [ -f $current_dir/index.php ] && [ -f $current_dir/core/includes/bootstrap.inc ]; then
+      drupal_root=$current_dir
+      drupal_version=8
+      break
+    fi
+    # Drupal 7 root.
+    if [ -f $current_dir/index.php ] && [ -f $current_dir/includes/bootstrap.inc ]; then
+      drupal_root=$current_dir
+      drupal_version=7
+      break
+    fi
+    current_dir=$(dirname $current_dir)
+  done
+
+
+  COMPREPLY=()
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+
+  local dirs='sites sites/all sites/default'
+  [ $drupal_version = 8 ] && dirs="$dirs modules themes profiles modules/contrib modules/custom profiles/modules profiles/modules/contrib profiles/modules/custom core/modules core/themes core/profiles"
+  [ $drupal_version = 7 ] && dirs="$dirs sites/all/modules sites/all/modules/contrib sites/all/modules/custom sites/all/modules/features sites/all/themes modules themes profiles profiles/modules profiles/modules/contrib profiles/modules/custom profiles/modules/features"
+  dirs="$dirs ."
+  for dir in $dirs; do
+    [ -d $dir ] && suggestions="$suggestions "$(find $drupal_root/$dir -maxdepth 1 -type d -name '[^.]*' -exec basename {} \;)
+  done
+
+  COMPREPLY=( $(compgen -W "${suggestions}" -- ${cur}) )
+  return 0
+}
+complete -F _dcd dcd

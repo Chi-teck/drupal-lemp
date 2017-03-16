@@ -98,17 +98,56 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Navigation between site directories.
+# Navigation between Drupal directories.
 function dcd {
-  path=$(drush dd $1)
-  if [ $path ]; then
-    cd $path
+  local drupal_root drupal_version current_dir
+
+  current_dir=$(pwd);
+  while true; do
+    if [ $current_dir == '/' ]; then
+      echo dcd: no Drupal root directory was found
+      return 1;
+    fi
+    # Drupal 8 root.
+    if [ -f $current_dir/index.php ] && [ -f $current_dir/core/includes/bootstrap.inc ]; then
+      drupal_root=$current_dir
+      drupal_version=8
+      break
+    fi
+    # Drupal 7 root.
+    if [ -f $current_dir/index.php ] && [ -f $current_dir/includes/bootstrap.inc ]; then
+      drupal_root=$current_dir
+      drupal_version=7
+      break
+    fi
+    current_dir=$(dirname $current_dir)
+  done
+
+  if [ -z $1 ]; then
+    cd $drupal_root
+    return 0;
   fi
+
+  local dirs='sites sites/all sites/default'
+  [ $drupal_version = 8 ] && dirs="$dirs modules themes profiles modules/contrib modules/custom profiles/modules profiles/modules/contrib profiles/modules/custom core/modules core/themes core/profiles" 
+  [ $drupal_version = 7 ] && dirs="$dirs sites/all/modules sites/all/modules/contrib sites/all/modules/custom sites/all/modules/features sites/all/themes modules themes profiles profiles/modules profiles/modules/contrib profiles/modules/custom profiles/modules/features" 
+  dirs="$dirs ."
+
+  for dir in $dirs; do
+    if [ -d $drupal_root/$dir/$1 ]; then
+      cd $drupal_root/$dir/$1
+      return 0
+    fi
+  done
+
+  echo "dcd: no such directory $1"
+  return 1
 }
 
 function parse_git_branch {
    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\[\1\]/' 
-} 
+}
+
 export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;34m\]:\[\e[0m\]\[\e[00;33m\]\w\[\e[0m\]\[\e[00;36m\]\$(parse_git_branch)\[\e[0m\]\n\[\e[01;30m\]$ \[\e[0m\]"
 
 alias drupalcs="phpcs --colors --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,js,css,info,txt'"
