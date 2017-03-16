@@ -18,7 +18,7 @@ echo 'Starting mysql...'
 service mysql start
 
 echo 'Starting php-fpm...'
-service php7.0-fpm start
+service php$PHP_VERSION-fpm start
 
 echo 'Starting mailhog...'
 nohup mailhog &

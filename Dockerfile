@@ -14,32 +14,31 @@ ENV MYSQL_ROOT_PASS=123 \
     HOST_USER_PASS=123 \
     TIMEZONE=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive \
-    PHP_VERSION=7.0
+    PHP_VERSION=7.1
 
 # Set server timezone.
 RUN echo $TIMEZONE | tee /etc/timezone && dpkg-reconfigure tzdata
 
-# Install dotdeb repo.
-RUN apt-get update \
-    && apt-get install -y curl \
-    && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
-    && curl -sS https://www.dotdeb.org/dotdeb.gpg | apt-key add -
+RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca-certificates && \
+    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo net-tools wget git vim zip unzip mc sqlite3 tree tmux ncdu html2text \
-  bash-completion nginx mysql-server mysql-client php7.0-xml php7.0-mysql \
-  php7.0-sqlite3 php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-cgi \
-  php7.0-fpm php7.0 php7.0-xdebug silversearcher-ag bsdmainutils man
+  sudo net-tools curl git vim zip unzip mc sqlite3 tree tmux ncdu html2text \
+  bash-completion nginx mysql-server mysql-client php$PHP_VERSION-xml php$PHP_VERSION-mysql \
+  php$PHP_VERSION-sqlite3 php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-json php$PHP_VERSION-mbstring php$PHP_VERSION-cgi \
+  php$PHP_VERSION-fpm php$PHP_VERSION php$PHP_VERSION-xdebug silversearcher-ag bsdmainutils man
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb
-  
+
 # Copy sudoers file.
 COPY sudoers /etc/sudoers
   
 # Update default nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
 
 # Change mysql root password.
 RUN service mysql start && mysqladmin -u root password $MYSQL_ROOT_PASS
@@ -91,12 +90,14 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/phpMyAdmin-
 COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
 RUN sed -i "s/root_pass/$MYSQL_ROOT_PASS/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
 # Install Adminer
 RUN mkdir /usr/share/adminer && \
     wget -O /usr/share/adminer/adminer.php https://www.adminer.org/static/download/$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
 COPY sites-available/adminer /etc/nginx/sites-available/adminer
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/adminer
 RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 
 # Install composer.
