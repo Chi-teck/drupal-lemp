@@ -118,7 +118,7 @@ linux=
 
 [Panels]
 show_mini_info=true
-kilobyte_si=true
+kilobyte_si=false
 mix_all_files=false
 show_backups=true
 show_dot_files=true
