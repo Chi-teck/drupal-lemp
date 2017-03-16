@@ -13,7 +13,8 @@ ENV MYSQL_ROOT_PASS=123 \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
     TIMEZONE=Europe/Moscow \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    PHP_VERSION=7.0
 
 # Set server timezone.
 RUN echo $TIMEZONE | tee /etc/timezone && dpkg-reconfigure tzdata
@@ -70,6 +71,9 @@ COPY bashrc /home/$HOST_USER_NAME/.bashrc
 COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 COPY gitignore /home/$HOST_USER_NAME/.gitignore
+COPY config /home/$HOST_USER_NAME/.config
+RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 
 # Install MailHog.
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \

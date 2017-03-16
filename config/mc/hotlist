@@ -1,0 +1,7 @@
+ENTRY "Home - /home/%USER%" URL "/home/%USER%"
+ENTRY "Downloads = /downloads" URL "/downloads"
+ENTRY "Temporary - /tmp" URL "/tmp"
+ENTRY "Web - /var/www" URL "/var/www"
+ENTRY "Logs - /var/log" URL "/var/log"
+ENTRY "Nginx - /etc/nginx" URL "/etc/nginx"
+ENTRY "PHP - /etc/php/%PHP_VERSION%" URL "/etc/php/%PHP_VERSION%"
