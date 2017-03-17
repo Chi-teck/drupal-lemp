@@ -56,10 +56,10 @@ RUN service mysql start && \
     mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASS' WITH GRANT OPTION";
 
 # Change PHP settings.
-COPY 20-development-fpm.ini /etc/php/7.0/fpm/conf.d/20-development.ini
-COPY 20-development-cli.ini /etc/php/7.0/cli/conf.d/20-development.ini
-COPY 20-xdebug.ini /etc/php/7.0/fpm/conf.d/20-xdebug.ini
-COPY 20-xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini
+COPY 20-development-fpm.ini /etc/php/7.1/fpm/conf.d/20-development.ini
+COPY 20-development-cli.ini /etc/php/7.1/cli/conf.d/20-development.ini
+COPY 20-xdebug.ini /etc/php/7.1/fpm/conf.d/20-xdebug.ini
+COPY 20-xdebug.ini /etc/php/7.1/cli/conf.d/20-xdebug.ini
     
 # Create host user.
 RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
@@ -103,9 +103,9 @@ RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Install PHPUnit,
-RUN sudo -u $HOST_USER_NAME composer global require "phpunit/phpunit"
-RUN echo 'export PATH=~/.composer/vendor/bin:$PATH' >> /home/$HOST_USER_NAME/.bashrc
+# Install composer packages.
+COPY composer.json /opt/composer/composer.json
+RUN (cd /opt/composer && composer install)
 
 # Install convert.php
 RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
@@ -125,11 +125,8 @@ RUN drush dl --destination=/home/$HOST_USER_NAME/.drush registry_rebuild-7 site_
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install phpcs.
-RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && chmod +x phpcs.phar && mv phpcs.phar /usr/local/bin/phpcs
-
 # Install drupalcs.
-RUN cd /usr/share/php && drush dl coder && phpcs --config-set installed_paths /usr/share/php/coder/coder_sniffer
+RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_sniffer
 
 # Install DCG.
 RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && chmod +x dcg.phar && mv dcg.phar /usr/local/bin/dcg
@@ -137,14 +134,11 @@ RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DC
 # Install Drupal Console.
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
 
-# Install Symfony console autocomplete.
-RUN sudo -u $HOST_USER_NAME composer global require bamarni/symfony-console-autocomplete
-
 # Install DCG completions.
-RUN sudo -u $HOST_USER_NAME /home/$HOST_USER_NAME/.composer/vendor/bin/symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
+RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
 
 # Install Composer completions.
-RUN sudo -u $HOST_USER_NAME /home/$HOST_USER_NAME/.composer/vendor/bin/symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
+RUN sudo -u $HOST_USER_NAME symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
 
 # Install d8-install script.
 COPY d8-install /usr/local/bin/d8-install

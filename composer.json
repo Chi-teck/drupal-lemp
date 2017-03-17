@@ -1,0 +1,11 @@
+{
+    "name": "Global packages",
+    "require": {
+        "squizlabs/php_codesniffer": "*",
+        "drupal/coder": "*",
+        "bamarni/symfony-console-autocomplete": "*"
+    },
+    "config": {
+        "bin-dir": "/usr/local/bin"
+    }
+}
