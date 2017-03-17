@@ -98,6 +98,34 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Drush wrapper.
+function drush {
+  local current_dir=$(pwd)
+  while true; do
+    # Nothing.
+    if [ $current_dir == '/' ]; then
+      # Launch global Drush.
+      /usr/local/bin/drush $@
+      return $?
+    # Drupal 8.
+    elif [ -f $current_dir/index.php ] && [ -f $current_dir/core/includes/bootstrap.inc ]; then
+      if [ -f $current_dir/vendor/bin/drush ]; then
+        $current_dir/vendor/bin/drush $@
+        return $?
+      else
+        echo Drush is not installed on this Drupal site.
+        return 1
+      fi
+    # Drupal 7.
+    elif [ -f $current_dir/index.php ] && [ -f $current_dir/includes/bootstrap.inc ]; then
+      # Launch global Drush.
+      /usr/local/bin/drush $@
+      return $?
+    fi
+    current_dir=$(dirname $current_dir)
+  done
+}
+
 # Navigation between Drupal directories.
 function dcd {
   local drupal_root drupal_version current_dir

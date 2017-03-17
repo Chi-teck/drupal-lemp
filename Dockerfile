@@ -116,14 +116,15 @@ RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-c
 RUN wget https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
 RUN mkdir /home/$HOST_USER_NAME/.drush && chown $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME/.drush
 COPY drushrc.php /home/$HOST_USER_NAME/.drush/drushrc.php
-COPY _dcd /etc/bash_completion.d/dcd
 
 # Install some extra Drush command.
-RUN drush dl --destination=/home/$HOST_USER_NAME/.drush registry_rebuild-7 site_audit && \
-   (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
+RUN (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
 
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
+
+# Install dcd completion.
+COPY _dcd /etc/bash_completion.d/dcd
 
 # Install drupalcs.
 RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_sniffer
