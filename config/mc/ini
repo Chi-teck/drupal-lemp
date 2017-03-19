@@ -98,8 +98,8 @@ horizontal_equal=1
 top_panel_size=24
 
 [Misc]
-timeformat_recent=%b %e %H:%M
-timeformat_old=%b %e  %Y
+timeformat_recent=%d.%m.%Y
+timeformat_old=%d.%m.%Y
 ftp_proxy_host=gate
 ftpfs_password=anonymous@
 display_codepage=UTF-8
