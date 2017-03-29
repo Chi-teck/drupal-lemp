@@ -28,7 +28,7 @@ RUN apt-get update && apt-get -y install \
   sudo net-tools curl git vim zip unzip mc sqlite3 tree tmux ncdu html2text \
   bash-completion nginx mysql-server mysql-client php$PHP_VERSION-xml php$PHP_VERSION-mysql \
   php$PHP_VERSION-sqlite3 php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-json php$PHP_VERSION-mbstring php$PHP_VERSION-cgi \
-  php$PHP_VERSION-fpm php$PHP_VERSION php$PHP_VERSION-xdebug silversearcher-ag bsdmainutils man
+  php$PHP_VERSION-fpm php$PHP_VERSION php$PHP_VERSION-xdebug php$PHP_VERSION-apcu silversearcher-ag bsdmainutils man
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && dpkg -i dumb-init_*.deb && rm dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
