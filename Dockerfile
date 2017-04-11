@@ -123,8 +123,10 @@ RUN (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/C
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install dcd completion.
-COPY _dcd /etc/bash_completion.d/dcd
+# Install drupalrc
+RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
+    wget -P/home/$HOST_USER_NAME $url/.drupalrc && \
+    wget -P /etc/bash_completion.d $url/drupal.complete.sh
 
 # Install drupalcs.
 RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_sniffer
