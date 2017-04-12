@@ -65,14 +65,15 @@ COPY 20-xdebug.ini /etc/php/7.1/cli/conf.d/20-xdebug.ini
 RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
 RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
   
-# Add dot files.
-COPY bashrc /home/$HOST_USER_NAME/.bashrc
+# Install dot files.
 COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 COPY gitignore /home/$HOST_USER_NAME/.gitignore
 COPY config /home/$HOST_USER_NAME/.config
 RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
+COPY bashrc /tmp/bashrc
+RUN cat /tmp/bashrc >> /home/$HOST_USER_NAME/.bashrc && rm /tmp/bashrc
 
 # Install MailHog.
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
@@ -123,9 +124,10 @@ RUN (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/C
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install drupalrc
+# Install Drupal RC
 RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
-    wget -P/home/$HOST_USER_NAME $url/.drupalrc && \
+    wget -O /etc/drupal.bashrc $url/.drupalrc && \
+    echo source /etc/drupal.bashrc >> /etc/bash.bashrc && \
     wget -P /etc/bash_completion.d $url/drupal.complete.sh
 
 # Install drupalcs.
@@ -165,6 +167,7 @@ RUN rm -rf /tmp/*
 # Install cmd.sh file.
 COPY cmd.sh /root/cmd.sh
 RUN chmod +x /root/cmd.sh
+
 
 # Default command..
 CMD ["dumb-init", "-c", "--", "/root/cmd.sh"]
