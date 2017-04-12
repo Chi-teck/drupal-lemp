@@ -145,10 +145,6 @@ RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/d
 # Install Composer completions.
 RUN sudo -u $HOST_USER_NAME symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
 
-# Install d8-install script.
-COPY d8-install /usr/local/bin/d8-install
-RUN chmod +x /usr/local/bin/d8-install
-
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
 
