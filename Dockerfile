@@ -26,7 +26,7 @@ RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca
 
 # Install required packages.
 RUN apt-get update && apt-get -y install \
-  sudo net-tools curl git vim zip unzip mc sqlite3 tree tmux ncdu html2text \
+  sudo net-tools curl git vim zip unzip mc sqlite3 tree tmux ncdu html2text less \
   bash-completion nginx mysql-server mysql-client php$PHP_VERSION-xml php$PHP_VERSION-mysql \
   php$PHP_VERSION-sqlite3 php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-json php$PHP_VERSION-mbstring php$PHP_VERSION-cgi \
   php$PHP_VERSION-fpm php$PHP_VERSION php$PHP_VERSION-xdebug php$PHP_VERSION-apcu silversearcher-ag bsdmainutils man
