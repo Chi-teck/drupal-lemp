@@ -2,13 +2,13 @@ FROM debian:jessie
 
 # Set variables.
 ENV MYSQL_ROOT_PASS=123 \
-    DUMB_INIT_VERSION='1.2.0' \
-    DRUSH_VERSION='8.1.10' \
-    DCG_VERSION='1.15.1' \
-    PHPMYADMIN_VERSION='4.7.0-rc1' \
-    ADMINER_VERSION='4.3.0' \
-    MAILHOG_VERSION='v0.2.1' \
-    MHSENDMAIL_VERSION='v0.2.0' \
+    DUMB_INIT_VERSION=1.2.0 \
+    DRUSH_VERSION=8.1.11 \
+    DCG_VERSION=1.15.1 \
+    PHPMYADMIN_VERSION=4.7.0 \
+    ADMINER_VERSION=4.3.0 \
+    MAILHOG_VERSION=v0.2.1 \
+    MHSENDMAIL_VERSION=v0.2.0 \
     HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
@@ -19,6 +19,7 @@ ENV MYSQL_ROOT_PASS=123 \
 # Set server timezone.
 RUN echo $TIMEZONE | tee /etc/timezone && dpkg-reconfigure tzdata
 
+# Update Apt sources.
 RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca-certificates && \
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
@@ -35,18 +36,13 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION
 
 # Copy sudoers file.
 COPY sudoers /etc/sudoers
-  
-# Update default nginx configuration.
+
+# Update default Nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
 
-# Change mysql root password.
+# Change MySql root password.
 RUN service mysql start && mysqladmin -u root password $MYSQL_ROOT_PASS
-
-# Grant access to debian user.
-RUN DEBIAN_PASS=$(cat /etc/mysql/debian.cnf | grep -m1 password | sed 's/password = //') && \
-    service mysql start && \
-    mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '$DEBIAN_PASS' WITH GRANT OPTION";
 
 # Disable bind-address.
 RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf
@@ -60,11 +56,11 @@ COPY 20-development-fpm.ini /etc/php/7.1/fpm/conf.d/20-development.ini
 COPY 20-development-cli.ini /etc/php/7.1/cli/conf.d/20-development.ini
 COPY 20-xdebug.ini /etc/php/7.1/fpm/conf.d/20-xdebug.ini
 COPY 20-xdebug.ini /etc/php/7.1/cli/conf.d/20-xdebug.ini
-    
+
 # Create host user.
 RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
 RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
-  
+
 # Install dot files.
 COPY vimrc /home/$HOST_USER_NAME/.vimrc
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
@@ -101,25 +97,27 @@ COPY sites-available/adminer /etc/nginx/sites-available/adminer
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/adminer
 RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 
-# Install composer.
+# Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Install composer packages.
+# Install Composer packages.
 COPY composer.json /opt/composer/composer.json
-RUN (cd /opt/composer && composer install)
+RUN composer --working-dir=/opt/composer install
 
 # Install convert.php
-RUN wget https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
-    chmod +x convert.php && \
-    mv convert.php /usr/local/bin/convert.php
-     
+RUN wget -O /usr/local/bin/convert.php \
+    https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
+    chmod +x /usr/local/bin/convert.php
+
 # Install Drush.
-RUN wget https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
+RUN wget -O /usr/local/bin/drush \
+    https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
+    chmod +x /usr/local/bin/drush
 RUN mkdir /home/$HOST_USER_NAME/.drush && chown $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME/.drush
 COPY drushrc.php /home/$HOST_USER_NAME/.drush/drushrc.php
 
 # Install some extra Drush command.
-RUN (cd /home/$HOST_USER_NAME/.drush && wget https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc)
+RUN wget -P /home/$HOST_USER_NAME/.drush https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc
 
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
@@ -130,11 +128,13 @@ RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
     echo source /etc/drupal.bashrc >> /etc/bash.bashrc && \
     wget -P /etc/bash_completion.d $url/drupal.complete.sh
 
-# Install drupalcs.
+# Register Drupal codding standards.
 RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_sniffer
 
 # Install DCG.
-RUN wget https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && chmod +x dcg.phar && mv dcg.phar /usr/local/bin/dcg
+RUN wget -O /usr/local/bin/dcg \
+   https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && \
+   chmod +x /usr/local/bin/dcg
 
 # Install Drupal Console.
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
@@ -146,13 +146,13 @@ RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/d
 RUN sudo -u $HOST_USER_NAME symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
 
 # Install Node.js and NPM.
-RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && apt-get install -y nodejs
 
 # Install NPM tools.
-RUN npm i -g grunt-cli gulp-cli bower eslint csslint drupal-project-loader
+RUN npm i -g grunt-cli gulp-cli bower eslint csslint stylelint
 
-# Copy mysql data to a temporary location. 
-RUN mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
+# Copy MySql data to a temporary location.
+RUN service mysql stop && mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
 # Set host user directory owner.
 RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
@@ -163,7 +163,6 @@ RUN rm -rf /tmp/*
 # Install cmd.sh file.
 COPY cmd.sh /root/cmd.sh
 RUN chmod +x /root/cmd.sh
-
 
 # Default command..
 CMD ["dumb-init", "-c", "--", "/root/cmd.sh"]

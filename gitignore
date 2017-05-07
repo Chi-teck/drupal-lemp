@@ -1,7 +1,1 @@
-.idea
-*sites/all/modules/contrib/devel
-*sites/all/modules/contrib/stage_file_proxy
-*sites/all/modules/contrib/coffee
-*sites/all/modules/contrib/pc
-*sites/all/modules/contrib/debug_bar
-*sites/default/drushrc.php
+/.idea
