@@ -18,16 +18,16 @@
 * MailHog
 * NPM tools (Grunt, Gulp, Bower, etc)
 
-## Running the container
+## Creating the container
 
-Basically you can run the container in two ways. The first one (classic) is exposing container services through the explicit port mapping.
+Basically you can create the container in two ways. The first one (classic) is exposing container services through the explicit port mapping.
 ```bash
 #! /bin/bash
 
 PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
 
-docker run -dit \
+docker create \
  -h $PROJECT_NAME \
  -p 80:80 \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
@@ -55,7 +55,7 @@ Now the container can be created as follows:
 PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
 
-docker run -dit \
+docker create \
  -h $PROJECT_NAME \
  -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
  -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
