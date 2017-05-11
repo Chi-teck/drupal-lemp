@@ -160,6 +160,9 @@ RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
 # Empty /tmp directory.
 RUN rm -rf /tmp/*
 
+# Remove default html directory.
+RUN rm -r /var/www/html
+
 # Install cmd.sh file.
 COPY cmd.sh /root/cmd.sh
 RUN chmod +x /root/cmd.sh
