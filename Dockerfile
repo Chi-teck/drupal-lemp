@@ -122,7 +122,7 @@ RUN wget -P /home/$HOST_USER_NAME/.drush https://raw.githubusercontent.com/Chi-t
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install Drupal RC
+# Install DrupalRC.
 RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
     wget -O /etc/drupalrc $url/drupalrc && echo source /etc/drupalrc >> /etc/bash.bashrc && \
     wget -O /etc/bash_completion.d/drupal.complete.sh $url/drupal.complete.sh && \
