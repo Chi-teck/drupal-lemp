@@ -9,6 +9,7 @@ ENV MYSQL_ROOT_PASS=123 \
     ADMINER_VERSION=4.3.0 \
     MAILHOG_VERSION=v0.2.1 \
     MHSENDMAIL_VERSION=v0.2.0 \
+    PECO_VERSION=v0.5.1 \
     HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
@@ -147,6 +148,12 @@ RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/d
 
 # Install Composer completions.
 RUN sudo -u $HOST_USER_NAME symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
+
+# Install Peco.
+RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/peco_linux_amd64.tar.gz && \
+    tar -xvf /tmp/peco_linux_amd64.tar.gz -C /tmp && \
+    mv /tmp/peco_linux_amd64/peco /usr/local/bin/peco && \
+    chmod +x /usr/local/bin/peco
 
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && apt-get install -y nodejs
