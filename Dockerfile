@@ -18,7 +18,7 @@ ENV MYSQL_ROOT_PASS=123 \
     PHP_VERSION=7.1
 
 # Set server timezone.
-RUN echo $TIMEZONE | tee /etc/timezone && dpkg-reconfigure tzdata
+RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure tzdata
 
 # Update Apt sources.
 RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca-certificates && \
