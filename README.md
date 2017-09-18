@@ -37,6 +37,7 @@ docker create \
  --group-add www-data \
  attr/drupal-lemp
 ```
+At this point the container can be started with the following command `docker start example`.
 Having this done you can access web server index page by navigating to the following url: http://localhost.
 
 The second way requires you to create custom docker network.
