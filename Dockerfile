@@ -16,7 +16,8 @@ ENV MYSQL_ROOT_PASS=123 \
     TIMEZONE=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive \
     PHP_VERSION=7.2 \
-    NODEJS_VERSION=9
+    NODEJS_VERSION=9 \
+    YARN_VERSION=1.3.2
 
 # Set server timezone.
 RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure tzdata
@@ -196,6 +197,12 @@ RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-
 
 # Install NPM tools.
 RUN npm i -g grunt-cli gulp-cli bower eslint csslint stylelint
+
+# Install Yarn.
+RUN apt-get update && apt-get install -y curl apt-transport-https && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && apt-get install -y yarn
 
 # Copy MySql data to a temporary location.
 RUN service mysql stop && mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
