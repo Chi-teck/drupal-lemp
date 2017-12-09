@@ -1,5 +1,4 @@
 ENTRY "Home - /home/%USER%" URL "/home/%USER%"
-ENTRY "Downloads = /downloads" URL "/downloads"
 ENTRY "Temporary - /tmp" URL "/tmp"
 ENTRY "Web - /var/www" URL "/var/www"
 ENTRY "Logs - /var/log" URL "/var/log"
