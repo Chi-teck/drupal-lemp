@@ -32,6 +32,8 @@ server {
   location ~ \.php$ {
     include snippets/fastcgi-php.conf;
     fastcgi_read_timeout 500;
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
     fastcgi_pass unix:/run/php/php%PHP_VERSION%-fpm.sock;
   }
   
