@@ -15,7 +15,8 @@ ENV MYSQL_ROOT_PASS=123 \
     HOST_USER_PASS=123 \
     TIMEZONE=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive \
-    PHP_VERSION=7.2
+    PHP_VERSION=7.2 \
+    NODEJS_VERSION=9
 
 # Set server timezone.
 RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure tzdata
@@ -191,7 +192,7 @@ RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/pe
     chmod +x /usr/local/bin/peco
 
 # Install Node.js and NPM.
-RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
 
 # Install NPM tools.
 RUN npm i -g grunt-cli gulp-cli bower eslint csslint stylelint
