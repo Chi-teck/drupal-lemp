@@ -179,9 +179,6 @@ RUN wget -O /usr/local/bin/dcg \
    https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && \
    chmod +x /usr/local/bin/dcg
 
-# Install Drupal Console.
-RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
-
 # Install DCG completions.
 RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
 
