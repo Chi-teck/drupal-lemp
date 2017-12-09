@@ -15,7 +15,7 @@ ENV MYSQL_ROOT_PASS=123 \
     HOST_USER_PASS=123 \
     TIMEZONE=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive \
-    PHP_VERSION=7.1
+    PHP_VERSION=7.2
 
 # Set server timezone.
 RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure tzdata
@@ -54,7 +54,6 @@ RUN apt-get update && apt-get -y install \
   php$PHP_VERSION-cgi \
   php$PHP_VERSION-fpm \
   php$PHP_VERSION \
-  php$PHP_VERSION-xdebug \
   php$PHP_VERSION-apcu \
   silversearcher-ag \
   bsdmainutils man
@@ -82,10 +81,12 @@ RUN service mysql start && \
     mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASS' WITH GRANT OPTION";
 
 # Change PHP settings.
-COPY 20-development-fpm.ini /etc/php/7.1/fpm/conf.d/20-development.ini
-COPY 20-development-cli.ini /etc/php/7.1/cli/conf.d/20-development.ini
-COPY 20-xdebug.ini /etc/php/7.1/fpm/conf.d/20-xdebug.ini
-COPY 20-xdebug.ini /etc/php/7.1/cli/conf.d/20-xdebug.ini
+COPY 20-development-fpm.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-development.ini
+COPY 20-development-cli.ini /etc/php/$PHP_VERSION/cli/conf.d/20-development.ini
+
+# Xdebug does not support PHP 7.2 yet.
+#COPY 20-xdebug.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
+#COPY 20-xdebug.ini /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 
 # Create host user.
 RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
