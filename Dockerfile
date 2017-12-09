@@ -195,7 +195,7 @@ RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/pe
 RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
 
 # Install NPM tools.
-RUN npm i -g grunt-cli gulp-cli bower eslint csslint stylelint
+RUN npm i -g grunt-cli gulp-cli eslint csslint stylelint
 
 # Install Yarn.
 RUN apt-get update && apt-get install -y curl apt-transport-https && \
