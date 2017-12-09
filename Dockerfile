@@ -1,8 +1,7 @@
 FROM debian:jessie
 
 # Set variables.
-ENV MYSQL_ROOT_PASS=123 \
-    DUMB_INIT_VERSION=1.2.1 \
+ENV DUMB_INIT_VERSION=1.2.1 \
     DRUSH_VERSION=8.1.15 \
     DCG_VERSION=1.21.3 \
     PHPMYADMIN_VERSION=4.7.6 \
@@ -11,13 +10,16 @@ ENV MYSQL_ROOT_PASS=123 \
     MHSENDMAIL_VERSION=v0.2.0 \
     PECO_VERSION=v0.5.2 \
     HOST_USER_NAME=lemp \
-    HOST_USER_UID=1000 \
-    HOST_USER_PASS=123 \
-    TIMEZONE=Europe/Moscow \
-    DEBIAN_FRONTEND=noninteractive \
     PHP_VERSION=7.2 \
     NODEJS_VERSION=9 \
-    YARN_VERSION=1.3.2
+    YARN_VERSION=1.3.2 \
+    HOST_USER_UID=1000 \
+    HOST_USER_PASS=123 \
+    MYSQL_ROOT_PASS=123 \
+    TIMEZONE=Europe/Moscow \
+    DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 # Set server timezone.
 RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure tzdata
