@@ -29,6 +29,7 @@ RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca
 RUN apt-get update && apt-get -y install \
   sudo \
   net-tools \
+  apt-utils \
   curl \
   git \
   vim \
@@ -56,7 +57,8 @@ RUN apt-get update && apt-get -y install \
   php$PHP_VERSION \
   php$PHP_VERSION-apcu \
   silversearcher-ag \
-  bsdmainutils man
+  bsdmainutils \
+  man
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \
