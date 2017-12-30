@@ -99,7 +99,8 @@ RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
 RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
 
 # Install dot files.
-COPY vimrc /home/$HOST_USER_NAME/.vimrc
+COPY vimrc /etc/vim/vimrc.local 
+COPY vim/colors /etc/vim/colors
 COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
 COPY gitignore /home/$HOST_USER_NAME/.gitignore
 COPY config /home/$HOST_USER_NAME/.config
