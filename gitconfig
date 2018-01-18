@@ -16,6 +16,7 @@
   lineNumber = true
 [alias]
   l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(yellow)%ar%C(reset) - %C(green)%an%C(reset) %C(white)%s%C(reset) %C(auto)%d%C(reset)' --all
+  locate = !git --no-pager l | grep -C15 --color
 [clean]
   requireForce = false
 [push]
