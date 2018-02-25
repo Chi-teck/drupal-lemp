@@ -154,11 +154,6 @@ RUN wget -O /usr/local/bin/convert.php \
 RUN wget -O /usr/local/bin/drush \
     https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
     chmod +x /usr/local/bin/drush
-RUN mkdir /home/$HOST_USER_NAME/.drush && chown $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME/.drush
-COPY drushrc.php /home/$HOST_USER_NAME/.drush/drushrc.php
-
-# Install some extra Drush command.
-RUN wget -P /home/$HOST_USER_NAME/.drush https://raw.githubusercontent.com/Chi-teck/touch-site/master/touch_site.drush.inc
 
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
