@@ -8,14 +8,16 @@
 [color "grep"]
   filename   = magenta
   linenumber = green
-  match      = red bold
+  match = red bold
+[color "decorate"]
+  remoteBranch = cyan
 [core]
   excludesfile = ~/.gitignore
   pager=less -FXRS
 [grep]
   lineNumber = true
 [alias]
-  l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(yellow)%ar%C(reset) - %C(green)%an%C(reset) %C(white)%s%C(reset) %C(auto)%d%C(reset)'
+  l = log --graph --abbrev-commit --decorate --date=relative --format=format:\"%C(bold blue)%h%C(reset) - %C(yellow)%ar%C(reset) - %C(green)%an%C(reset) %C(white)%s%C(reset) %C(auto)%d%C(reset)\"
   locate = !git --no-pager l | grep -C15 --color
 [clean]
   requireForce = false

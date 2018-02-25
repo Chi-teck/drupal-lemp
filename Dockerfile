@@ -101,8 +101,8 @@ RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
 # Install dot files.
 COPY vimrc /etc/vim/vimrc.local 
 COPY vim/colors /etc/vim/colors
-COPY gitconfig /home/$HOST_USER_NAME/.gitconfig
-COPY gitignore /home/$HOST_USER_NAME/.gitignore
+COPY gitconfig /etc/gitconfig
+COPY gitignore /etc/gitignore
 COPY config /home/$HOST_USER_NAME/.config
 RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
