@@ -176,10 +176,10 @@ RUN wget -O /usr/local/bin/dcg \
    chmod +x /usr/local/bin/dcg
 
 # Install DCG completions.
-RUN sudo -u $HOST_USER_NAME symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
+RUN SHELL=/bin/bash symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
 
 # Install Composer completions.
-RUN sudo -u $HOST_USER_NAME symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
+RUN SHELL=/bin/bash symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
 
 # Install Peco.
 RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/peco_linux_amd64.tar.gz && \
