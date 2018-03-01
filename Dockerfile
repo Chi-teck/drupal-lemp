@@ -95,7 +95,7 @@ COPY 20-xdebug.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
 COPY 20-xdebug.ini /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 
 # Create host user.
-RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo
+RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo -s /bin/bash
 RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
 
 # Install dot files.
