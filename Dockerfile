@@ -29,7 +29,7 @@ RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
 # Install required packages.
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
   sudo \
   net-tools \
   apt-utils \
@@ -62,7 +62,8 @@ RUN apt-get update && apt-get -y install \
   php$PHP_VERSION-apcu \
   silversearcher-ag \
   bsdmainutils \
-  man
+  man \
+  openssh-server
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \

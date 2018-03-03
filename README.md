@@ -17,6 +17,7 @@
 * Drupal Console
 * MailHog
 * NPM tools (Grunt, Gulp, Bower, etc)
+* SSH server
 
 ## Creating the container
 
@@ -91,6 +92,7 @@ echo 'alias example="docker start example && docker exec -itu lemp example bash"
 * 8025 - MailHog web UI
 * 8088 - PhpMyAdmin
 * 8089 - Adminer
+* 22 - SSH
 
 ## Access
 * Host user name - lemp
