@@ -25,14 +25,14 @@ Basically you can create the container in two ways. The first one (classic) is e
 ```bash
 #! /bin/bash
 
-PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
+PROJECT_DIR=/var/docker/projects/$PROJECT_NAME
 
 docker create \
  -h $PROJECT_NAME \
  -p 80:80 \
- -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
- -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
+ -v $PROJECT_DIR/www:/var/www \
+ -v $PROJECT_DIR/mysql:/var/lib/mysql \
  --name $PROJECT_NAME \
  --group-add sudo \
  --group-add www-data \
@@ -54,13 +54,13 @@ Now the container can be created as follows:
 ```bash
 #! /bin/bash
 
-PROJECTS_DIR=/var/docker/projects/
 PROJECT_NAME=example
+PROJECT_DIR=/var/docker/projects/$PROJECT_NAME
 
 docker create \
  -h $PROJECT_NAME \
- -v $PROJECTS_DIR/$PROJECT_NAME/www:/var/www \
- -v $PROJECTS_DIR/$PROJECT_NAME/mysql:/var/lib/mysql \
+ -v $PROJECT_DIR/www:/var/www \
+ -v $PROJECT_DIR/mysql:/var/lib/mysql \
  --net my-net \
  --ip 172.28.0.1 \
  --name $PROJECT_NAME \
