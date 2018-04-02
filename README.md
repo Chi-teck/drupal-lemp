@@ -87,7 +87,8 @@ echo 'alias example="docker start example && docker exec -itu lemp example bash"
 
 ## Available ports
 * 22 - SSH
-* 80 - Main HTTP
+* 80 - HTTP
+* 443 - HTTPS
 * 1025 - MailHog SMTP
 * 3306 - MySQL
 * 8025 - MailHog web UI

@@ -73,6 +73,11 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION
 # Copy sudoers file.
 COPY sudoers /etc/sudoers
 
+# Install SSL.
+COPY request-ssl.sh /root
+RUN chmod +x /root/request-ssl.sh
+RUN /root/request-ssl.sh
+
 # Update default Nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
