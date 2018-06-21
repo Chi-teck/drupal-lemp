@@ -2,16 +2,16 @@ FROM debian:jessie
 
 # Set variables.
 ENV DUMB_INIT_VERSION=1.2.1 \
-    DRUSH_VERSION=8.1.16 \
-    DCG_VERSION=1.22.0 \
-    PHPMYADMIN_VERSION=4.7.7 \
-    ADMINER_VERSION=4.6.0 \
+    DRUSH_VERSION=8.1.17 \
+    DCG_VERSION=1.25.1 \
+    PHPMYADMIN_VERSION=4.8.1 \
+    ADMINER_VERSION=4.6.2 \
     MAILHOG_VERSION=v1.0.0 \
     MHSENDMAIL_VERSION=v0.2.0 \
-    PECO_VERSION=v0.5.2 \
+    PECO_VERSION=v0.5.3 \
     HOST_USER_NAME=lemp \
     PHP_VERSION=7.2 \
-    NODEJS_VERSION=9 \
+    NODEJS_VERSION=10 \
     HOST_USER_UID=1000 \
     HOST_USER_PASS=123 \
     MYSQL_ROOT_PASS=123 \
@@ -39,9 +39,15 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
   zip \
   unzip \
   mc \
+  silversearcher-ag \
+  bsdmainutils \
+  man \
+  openssh-server \
+  patch \
   sqlite3 \
   tree \
   ncdu \
+  rsync \
   html2text \
   less \
   bash-completion \
@@ -59,11 +65,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
   php$PHP_VERSION-cgi \
   php$PHP_VERSION-fpm \
   php$PHP_VERSION \
-  php$PHP_VERSION-apcu \
-  silversearcher-ag \
-  bsdmainutils \
-  man \
-  openssh-server
+  php$PHP_VERSION-apcu
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \
@@ -95,8 +97,6 @@ RUN service mysql start && \
 # Change PHP settings.
 COPY 20-development-fpm.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-development.ini
 COPY 20-development-cli.ini /etc/php/$PHP_VERSION/cli/conf.d/20-development.ini
-
-# Xdebug does not support PHP 7.2 yet.
 COPY 20-xdebug.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
 COPY 20-xdebug.ini /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 
@@ -178,8 +178,8 @@ RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_s
 
 # Install DCG.
 RUN wget -O /usr/local/bin/dcg \
-   https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && \
-   chmod +x /usr/local/bin/dcg
+    https://github.com/Chi-teck/drupal-code-generator/releases/download/$DCG_VERSION/dcg.phar && \
+    chmod +x /usr/local/bin/dcg
 
 # Install DCG completions.
 RUN SHELL=/bin/bash symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_complete.sh
@@ -205,7 +205,7 @@ RUN apt-get update && apt-get install -y curl apt-transport-https && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && apt-get install -y yarn
 
-# Copy MySql data to a temporary location.
+# Copy MySQL data to a temporary location.
 RUN service mysql stop && mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
 
 # Set host user directory owner.

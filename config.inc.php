@@ -15,3 +15,4 @@ $cfg['Servers'][$i]['AllowRoot'] = TRUE;
 $cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
+$cfg['TempDir'] = '/tmp';
