@@ -11,12 +11,13 @@
 * Adminer
 * Xdebug
 * Composer
+* PHP-CS-Fixer
 * Drush
 * Drupalcs
 * Drupal Code Generator
 * Drupal Console
 * MailHog
-* NPM tools (Grunt, Gulp, Bower, etc)
+* NPM tools (Grunt, Gulp, etc)
 * SSH server
 
 ## Creating the container
