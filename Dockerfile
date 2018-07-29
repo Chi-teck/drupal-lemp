@@ -9,6 +9,7 @@ ENV DUMB_INIT_VERSION=1.2.1 \
     MAILHOG_VERSION=v1.0.0 \
     MHSENDMAIL_VERSION=v0.2.0 \
     PECO_VERSION=v0.5.3 \
+    GOTTY_VERSION=2.0.0-alpha.3 \
     HOST_USER_NAME=lemp \
     PHP_VERSION=7.2 \
     NODEJS_VERSION=10 \
@@ -204,6 +205,12 @@ RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/pe
     tar -xvf /tmp/peco_linux_amd64.tar.gz -C /tmp && \
     mv /tmp/peco_linux_amd64/peco /usr/local/bin/peco && \
     chmod +x /usr/local/bin/peco
+
+# Install GoTTY.
+RUN wget -P /tmp https://github.com/yudai/gotty/releases/download/v$GOTTY_VERSION/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz && \
+    tar -xvf /tmp/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz -C /tmp && \
+    mv /tmp/gotty /usr/local/bin/gotty && \
+    chmod +x /usr/local/bin/gotty
 
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
