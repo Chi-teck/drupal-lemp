@@ -85,14 +85,11 @@ RUN /root/request-ssl.sh
 COPY sites-available/default /etc/nginx/sites-available/default
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
 
-# Change MySql root password.
-RUN service mysql start && mysqladmin -u root password $MYSQL_ROOT_PASS
-
-# Disable bind-address.
-RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf
-
-# Grant access to root user from any host.
-RUN service mysql start && \
+# Configure MySQL.
+RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf && \
+    find /var/lib/mysql -type f -exec touch {} \; && \
+    service mysql start && \
+    mysqladmin -u root password $MYSQL_ROOT_PASS && \
     mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASS' WITH GRANT OPTION";
 
 # Change PHP settings.
