@@ -161,6 +161,7 @@ RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-
 RUN mkdir /opt/var-dumper
 RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^4.1
 RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^4.0
+COPY dumper.php /usr/share/php
 
 # Install PHP coding standards Fixer.
 RUN mkdir /opt/php-cs-fixer
