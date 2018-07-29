@@ -166,11 +166,6 @@ RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper requi
 RUN mkdir /opt/php-cs-fixer
 RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer
 
-# Install convert.php
-RUN wget -O /usr/local/bin/convert.php \
-    https://raw.githubusercontent.com/thomasbachem/php-short-array-syntax-converter/master/convert.php && \
-    chmod +x /usr/local/bin/convert.php
-
 # Install Drush.
 RUN wget -O /usr/local/bin/drush \
     https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
