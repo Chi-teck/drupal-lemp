@@ -147,9 +147,24 @@ RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Install Composer packages.
-COPY composer.json /opt/composer/composer.json
-RUN composer --working-dir=/opt/composer install
+# Install Drupal Coder.
+RUN mkdir /opt/drupal-coder
+RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder
+# Register Drupal codding standards.
+RUN phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
+
+# Install Symfony console autocomplete.
+RUN mkdir /opt/symfony-console-autocomplete
+RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master
+
+# Install VarDumper Component.
+RUN mkdir /opt/var-dumper
+RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^4.1
+RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^4.0
+
+# Install PHP coding standards Fixer.
+RUN mkdir /opt/php-cs-fixer
+RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer
 
 # Install convert.php
 RUN wget -O /usr/local/bin/convert.php \
@@ -172,9 +187,6 @@ RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
     wget -P /usr/share/drupal-projects $url/drupal-projects/d6.txt && \
     wget -P /usr/share/drupal-projects $url/drupal-projects/d7.txt && \
     wget -P /usr/share/drupal-projects $url/drupal-projects/d8.txt
-
-# Register Drupal codding standards.
-RUN phpcs --config-set installed_paths /opt/composer/vendor/drupal/coder/coder_sniffer
 
 # Install DCG.
 RUN wget -O /usr/local/bin/dcg \
