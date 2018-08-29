@@ -79,8 +79,7 @@ COPY sudoers /etc/sudoers
 
 # Install SSL.
 COPY request-ssl.sh /root
-RUN chmod +x /root/request-ssl.sh
-RUN /root/request-ssl.sh
+RUN bash /root/request-ssl.sh && rm root/request-ssl.sh
 
 # Update default Nginx configuration.
 COPY sites-available/default /etc/nginx/sites-available/default
@@ -149,7 +148,7 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 # Install Drupal Coder.
 RUN mkdir /opt/drupal-coder
 RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder
-# Register Drupal codding standards.
+# Register Drupal coding standards.
 RUN phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
 
 # Install Symfony console autocomplete.
