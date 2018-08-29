@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 # Set variables.
 ENV DUMB_INIT_VERSION=1.2.1 \
@@ -34,6 +34,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
   sudo \
   net-tools \
   apt-utils \
+  gnupg \
   curl \
   git \
   vim \
