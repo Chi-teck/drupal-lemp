@@ -1,7 +1,10 @@
 #! /bin/bash
 
-# Return orignal mysql directory if the mounted one is empty.
-if [ ! "$(ls -A "/var/lib/mysql")" ]; then
+# Remove temporary MySQL directory.
+if [ "$(ls -A "/var/lib/mysql")" ]; then
+  rm -r /var/lib/_mysql
+# Return orignal MySQL directory if the mounted one is empty.
+else
   cp -R /var/lib/_mysql/* /var/lib/mysql
   chown -R mysql:mysql /var/lib/mysql
 fi
