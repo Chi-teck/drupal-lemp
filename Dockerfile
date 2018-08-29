@@ -241,4 +241,4 @@ RUN chmod +x /root/cmd.sh
 USER lemp
 
 # Default command.
-CMD ["sudo", "dumb-init", "-c", "--", "/root/cmd.sh"]
+CMD ["sudo", "-E", "dumb-init", "-c", "--", "/root/cmd.sh"]
