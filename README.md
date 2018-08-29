@@ -76,7 +76,7 @@ New containers can be attached to the same network or to a distinct one for bett
 
 ## Connecting to the container
 
-```bash
+```
 docker exec -it example bash
 ```
 
