@@ -15,7 +15,6 @@
 * Drush
 * Drupalcs
 * Drupal Code Generator
-* Drupal Console
 * MailHog
 * NPM tools (Grunt, Gulp, etc)
 * SSH server
@@ -77,13 +76,8 @@ New containers can be attached to the same network or to a distinct one for bett
 
 ## Connecting to the container
 
-It is strongly recommended you connect to the container using **lemp** account.
 ```bash
-docker exec -itu lemp:www-data example bash
-```
-You may want to create an alias for less typing.
-```bash
-echo 'alias example="docker start example && docker exec -itu lemp example bash"' >> ~/.bashrc
+docker exec -it example bash
 ```
 
 ## Available ports
