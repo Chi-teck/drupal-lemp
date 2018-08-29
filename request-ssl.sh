@@ -14,4 +14,3 @@ openssl req \
     -config <(cat /usr/lib/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=DNS:localhost')) \
     -sha256 \
     -days 365
-
