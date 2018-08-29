@@ -1,11 +1,8 @@
 #! /bin/bash
 
-# Remove temporary MySQL directory.
-if [ "$(ls -A "/var/lib/mysql")" ]; then
-  rm -r /var/lib/_mysql
 # Return orignal MySQL directory if the mounted one is empty.
-else
-  cp -R /var/lib/_mysql/* /var/lib/mysql
+if [ ! "$(ls -A "/var/lib/mysql")" ]; then
+  cp -R /var/lib/mysql_default/* /var/lib/mysql
   chown -R mysql:mysql /var/lib/mysql
 fi
 
@@ -23,9 +20,5 @@ service php$PHP_VERSION-fpm start
 service mysql start
 
 service ssh start
-
-# Make sure that password for debian system account is still valid.
-DEBIAN_PASS=$(cat /etc/mysql/debian.cnf | awk '/password/ {print $3; exit}') && \
-mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '$DEBIAN_PASS' WITH GRANT OPTION"
 
 tail -f /var/log/nginx/access.log

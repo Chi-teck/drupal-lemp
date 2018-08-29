@@ -221,8 +221,8 @@ RUN apt-get update && apt-get install -y curl apt-transport-https && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && apt-get install -y yarn
 
-# Copy MySQL data to a temporary location.
-RUN service mysql stop && mkdir /var/lib/_mysql && cp -R /var/lib/mysql/* /var/lib/_mysql
+# Preserve default MySQL data.
+RUN mkdir /var/lib/mysql_default && cp -R /var/lib/mysql/* /var/lib/mysql_default
 
 # Set host user directory owner.
 RUN chown -R $HOST_USER_NAME:$HOST_USER_NAME /home/$HOST_USER_NAME
