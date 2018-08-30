@@ -6,7 +6,7 @@
 
 * Nginx
 * MariaDB
-* PHP 7.2
+* PHP 7
 * phpMyAdmin
 * Adminer
 * Xdebug
