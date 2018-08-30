@@ -14,8 +14,8 @@ ENV DUMB_INIT_VERSION=1.2.1 \
     PHP_VERSION=7.2 \
     NODEJS_VERSION=10 \
     HOST_USER_UID=1000 \
-    HOST_USER_PASS=123 \
-    MYSQL_ROOT_PASS=123 \
+    HOST_USER_PASSWORD=123 \
+    MYSQL_ROOT_PASSWORD=123 \
     TIMEZONE=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
@@ -87,10 +87,10 @@ RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
 
 # Configure MySQL.
 RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf && \
-    find /var/lib/mysql -type f -exec touch {} \; && \
     service mysql start && \
-    mysqladmin -u root password $MYSQL_ROOT_PASS && \
-    mysql -uroot -p$MYSQL_ROOT_PASS -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASS' WITH GRANT OPTION";
+    mysql -uroot -e"SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PASSWORD')" && \
+    mysql -uroot -e"UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE user = 'root'" && \
+    mysql -uroot -e"FLUSH PRIVILEGES"
 
 # Change PHP settings.
 COPY 20-development-fpm.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-development.ini
@@ -100,7 +100,7 @@ COPY 20-xdebug.ini /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 
 # Create host user.
 RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo -s /bin/bash
-RUN echo $HOST_USER_NAME:$HOST_USER_PASS | chpasswd
+RUN echo $HOST_USER_NAME:$HOST_USER_PASSWORD | chpasswd
 
 # Install dot files.
 COPY vimrc /etc/vim/vimrc.local 
