@@ -5,8 +5,8 @@
 ## What is inside
 
 * Nginx
-* MySQL
-* PHP 7
+* MariaDB
+* PHP 7.2
 * phpMyAdmin
 * Adminer
 * Xdebug
