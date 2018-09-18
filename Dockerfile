@@ -86,10 +86,12 @@ COPY sites-available/default /etc/nginx/sites-available/default
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/default
 
 # Configure MySQL.
-RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/my.cnf && \
+RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/mariadb.conf.d/50-server.cnf && \
+    sed -i "s/password =/password = $MYSQL_ROOT_PASSWORD/" /etc/mysql/debian.cnf && \
     service mysql start && \
     mysql -uroot -e"SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PASSWORD')" && \
     mysql -uroot -e"UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE user = 'root'" && \
+    mysql -uroot -e"GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'" && \
     mysql -uroot -e"FLUSH PRIVILEGES"
 
 # Change PHP settings.
