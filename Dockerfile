@@ -130,7 +130,7 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/phpMyAdmin-
     mv phpMyAdmin-$PHPMYADMIN_VERSION-all-languages /usr/share/phpmyadmin && \
     rm phpMyAdmin-$PHPMYADMIN_VERSION-all-languages.zip
 COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
-RUN sed -i "s/root_pass/$MYSQL_ROOT_PASS/" /usr/share/phpmyadmin/config.inc.php
+RUN sed -i "s/root_pass/$MYSQL_ROOT_PASSWORD/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmin
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
