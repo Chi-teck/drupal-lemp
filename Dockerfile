@@ -54,8 +54,8 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
   less \
   bash-completion \
   nginx \
-  mysql-server \
-  mysql-client \
+  mariadb-server \
+  mariadb-client \
   php-xdebug \
   php$PHP_VERSION-xml \
   php$PHP_VERSION-mysql \
