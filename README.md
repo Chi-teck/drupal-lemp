@@ -80,6 +80,13 @@ New containers can be attached to the same network or to a distinct one for bett
 docker exec -it example bash
 ```
 
+## Xdebug
+Xdebug is switched off by default by performance reason. Run the following
+command to switch it on before debugging.
+```
+sudo xdebug on
+```
+
 ## Available ports
 * 22 - SSH
 * 80 - HTTP
