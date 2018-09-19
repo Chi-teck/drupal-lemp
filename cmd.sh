@@ -17,6 +17,8 @@ service nginx start
 
 service php$PHP_VERSION-fpm start
 
+xdebug off
+
 service mysql start
 
 service ssh start
