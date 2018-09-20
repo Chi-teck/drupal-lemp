@@ -31,43 +31,43 @@ RUN apt-get update && apt-get -y install wget apt-transport-https lsb-release ca
 
 # Install required packages.
 RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
-  sudo \
-  net-tools \
-  apt-utils \
-  gnupg \
-  curl \
-  git \
-  vim \
-  zip \
-  unzip \
-  mc \
-  silversearcher-ag \
-  bsdmainutils \
-  man \
-  openssh-server \
-  patch \
-  sqlite3 \
-  tree \
-  ncdu \
-  rsync \
-  html2text \
-  less \
-  bash-completion \
-  nginx \
-  mariadb-server \
-  mariadb-client \
-  php-xdebug \
-  php$PHP_VERSION-xml \
-  php$PHP_VERSION-mysql \
-  php$PHP_VERSION-sqlite3 \
-  php$PHP_VERSION-curl \
-  php$PHP_VERSION-gd \
-  php$PHP_VERSION-json \
-  php$PHP_VERSION-mbstring \
-  php$PHP_VERSION-cgi \
-  php$PHP_VERSION-fpm \
-  php$PHP_VERSION \
-  php$PHP_VERSION-apcu
+    sudo \
+    net-tools \
+    apt-utils \
+    gnupg \
+    curl \
+    git \
+    vim \
+    zip \
+    unzip \
+    mc \
+    silversearcher-ag \
+    bsdmainutils \
+    man \
+    openssh-server \
+    patch \
+    sqlite3 \
+    tree \
+    ncdu \
+    rsync \
+    html2text \
+    less \
+    bash-completion \
+    nginx \
+    mariadb-server \
+    mariadb-client \
+    php-xdebug \
+    php$PHP_VERSION-xml \
+    php$PHP_VERSION-mysql \
+    php$PHP_VERSION-sqlite3 \
+    php$PHP_VERSION-curl \
+    php$PHP_VERSION-gd \
+    php$PHP_VERSION-json \
+    php$PHP_VERSION-mbstring \
+    php$PHP_VERSION-cgi \
+    php$PHP_VERSION-fpm \
+    php$PHP_VERSION \
+    php$PHP_VERSION-apcu
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \
@@ -106,8 +106,8 @@ RUN chmod +x /usr/local/bin/xdebug && \
     sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /usr/local/bin/xdebug
 
 # Create host user.
-RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo -s /bin/bash
-RUN echo $HOST_USER_NAME:$HOST_USER_PASSWORD | chpasswd
+RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo -s /bin/bash && \
+    echo $HOST_USER_NAME:$HOST_USER_PASSWORD | chpasswd
 
 # Install dot files.
 COPY vimrc /etc/vim/vimrc.local 
@@ -115,8 +115,8 @@ COPY vim/colors /etc/vim/colors
 COPY gitconfig /etc/gitconfig
 COPY gitignore /etc/gitignore
 COPY config /home/$HOST_USER_NAME/.config
-RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
-RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
+RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist && \
+    sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 COPY bashrc /tmp/bashrc
 RUN cat /tmp/bashrc >> /home/$HOST_USER_NAME/.bashrc && rm /tmp/bashrc
 
@@ -139,46 +139,44 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/phpMyAdmin-
 COPY config.inc.php /usr/share/phpmyadmin/config.inc.php
 RUN sed -i "s/root_pass/$MYSQL_ROOT_PASSWORD/" /usr/share/phpmyadmin/config.inc.php
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
-RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmin
-RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmin && \
+    ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 
 # Install Adminer.
 RUN mkdir /usr/share/adminer && \
     wget -O /usr/share/adminer/adminer.php https://www.adminer.org/static/download/$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
 COPY sites-available/adminer /etc/nginx/sites-available/adminer
-RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/adminer
-RUN ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
+RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/adminer && \
+    ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Install Drupal Coder.
-RUN mkdir /opt/drupal-coder
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder
-# Register Drupal coding standards.
-RUN phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
+RUN mkdir /opt/drupal-coder && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder && \
+    phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
 
 # Install Symfony console autocomplete.
-RUN mkdir /opt/symfony-console-autocomplete
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master
+RUN mkdir /opt/symfony-console-autocomplete && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master
 
 # Install VarDumper Component.
-RUN mkdir /opt/var-dumper
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^4.1
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^4.0
+RUN mkdir /opt/var-dumper && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^4.1 && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^4.0
 COPY dumper.php /usr/share/php
 
 # Install PHP coding standards Fixer.
-RUN mkdir /opt/php-cs-fixer
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer
+RUN mkdir /opt/php-cs-fixer && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer
 
 # Install PHPUnit.
-RUN mkdir /opt/phpunit
-RUN COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/phpunit require phpunit/phpunit
+RUN mkdir /opt/phpunit && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/phpunit require phpunit/phpunit
 
 # Install Drush.
-RUN wget -O /usr/local/bin/drush \
-    https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
+RUN wget -O /usr/local/bin/drush  https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
     chmod +x /usr/local/bin/drush
 
 # Enable drush completion.

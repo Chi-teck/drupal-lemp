@@ -27,4 +27,3 @@ function dumps($var, ...$moreVars) {
   }
   return $var;
 }
-
