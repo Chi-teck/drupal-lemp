@@ -94,11 +94,9 @@ RUN sed -i "s/bind-address/#bind-address/" /etc/mysql/mariadb.conf.d/50-server.c
     mysql -uroot -e"GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'" && \
     mysql -uroot -e"FLUSH PRIVILEGES"
 
-# Change PHP settings.
-COPY 20-development-fpm.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-development.ini
-COPY 20-development-cli.ini /etc/php/$PHP_VERSION/cli/conf.d/20-development.ini
-COPY 20-xdebug.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
-COPY 20-xdebug.ini /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
+# Override some PHP settings.
+COPY 30-local-fpm.ini /etc/php/$PHP_VERSION/fpm/conf.d/30-local.ini
+COPY 30-local-cli.ini /etc/php/$PHP_VERSION/cli/conf.d/30-local.ini
 
 # Install xdebug manager.
 COPY xdebug.sh /usr/local/bin/xdebug
