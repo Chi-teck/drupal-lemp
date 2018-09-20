@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $EUID -ne 0 ]; then
-  >&2 echo 'Please run as root.'
+  >&2 echo -e '\e[91mPlease run as root.\e[0m'
   exit 1
 fi
 
