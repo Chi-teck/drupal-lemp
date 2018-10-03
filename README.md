@@ -76,8 +76,14 @@ New containers can be attached to the same network or to a distinct one for bett
 
 ## Connecting to the container
 
+It is strongly recommended you connect to the container using **lemp** account.
 ```
-docker exec -it example bash
+docker exec -itu lemp:www-data example bash
+```
+
+You may create an alias for less typing.
+```
+echo 'alias example="docker start example && docker exec -itu lemp example bash"' >> ~/.bashrc
 ```
 
 ## Xdebug
