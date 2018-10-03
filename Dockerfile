@@ -155,6 +155,10 @@ RUN mkdir /opt/drupal-coder && \
     COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder && \
     phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
 
+# Install Twig code sniffer.
+RUN mkdir /opt/twigcs && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/twigcs require allocine/twigcs
+
 # Install Symfony console autocomplete.
 RUN mkdir /opt/symfony-console-autocomplete && \
     COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master
