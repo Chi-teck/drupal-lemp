@@ -8,7 +8,7 @@ if (!class_exists('Symfony\Component\VarDumper\Dumper\ServerDumper')) {
   require_once '/opt/var-dumper/vendor/autoload.php';
 }
 
-if (!function_exists(dumps)) {
+if (!function_exists('dumps')) {
   function dumps($var, ...$moreVars) {
     $cloner = new VarCloner();
     $dumper = new ServerDumper($_SERVER['VAR_DUMPER_SERVER'] ?? '127.0.0.1:9912');
