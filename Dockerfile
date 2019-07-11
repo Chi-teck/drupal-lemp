@@ -9,6 +9,7 @@ ENV DUMB_INIT_VERSION=1.2.2 \
     MAILHOG_VERSION=v1.0.0 \
     MHSENDMAIL_VERSION=v0.2.0 \
     PECO_VERSION=v0.5.3 \
+    BAT_VERSION=0.11.0 \
     GOTTY_VERSION=2.0.0-alpha.3 \
     HOST_USER_NAME=lemp \
     PHP_VERSION=7.3 \
@@ -209,6 +210,10 @@ RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/pe
     tar -xvf /tmp/peco_linux_amd64.tar.gz -C /tmp && \
     mv /tmp/peco_linux_amd64/peco /usr/local/bin/peco && \
     chmod +x /usr/local/bin/peco
+
+# Install Bat.
+RUN wget -P /tmp https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat-musl_${BAT_VERSION}_amd64.deb && \
+    sudo dpkg -i /tmp/bat-musl_${BAT_VERSION}_amd64.deb
 
 # Install GoTTY.
 RUN wget -P /tmp https://github.com/yudai/gotty/releases/download/v$GOTTY_VERSION/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz && \
