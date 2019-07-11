@@ -119,6 +119,11 @@ RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 COPY bashrc /tmp/bashrc
 RUN cat /tmp/bashrc >> /home/$HOST_USER_NAME/.bashrc && rm /tmp/bashrc
 
+# Install HR.
+RUN wget https://raw.githubusercontent.com/LuRsT/hr/master/hr && \
+   chmod +x hr && \
+   mv hr /usr/local/bin/hr
+
 # Install MailHog.
 RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/MailHog_linux_amd64 && \
     chmod +x MailHog_linux_amd64 && \
