@@ -134,8 +134,8 @@ RUN wget https://github.com/mailhog/MailHog/releases/download/$MAILHOG_VERSION/M
 
 # Install ANSI.
 RUN wget https://raw.githubusercontent.com/fidian/ansi/master/ansi && \
-RUN chmod +x ansi && \
-RUN mv ansi /usr/local/bin/ansi
+    chmod +x ansi && \
+    mv ansi /usr/local/bin/ansi
 
 # Install JQ.
 RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && \
