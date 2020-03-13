@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # Return orignal MySQL directory if the mounted one is empty.
 if [ ! "$(ls -A "/var/lib/mysql")" ]; then

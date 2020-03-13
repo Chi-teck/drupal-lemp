@@ -1,19 +1,20 @@
-FROM debian:stretch
+FROM debian:buster
 
 # Set variables.
 ENV DUMB_INIT_VERSION=1.2.2 \
     DRUSH_VERSION=8.3.2 \
-    DCG_VERSION=2.0.0-beta4 \
-    PHPMYADMIN_VERSION=4.9.2 \
-    ADMINER_VERSION=4.7.5 \
+    DCG_VERSION=2.0.0-beta5 \
+    PHPMYADMIN_VERSION=5.0.1 \
+    ADMINER_VERSION=4.7.6 \
     MAILHOG_VERSION=v1.0.0 \
     MHSENDMAIL_VERSION=v0.2.0 \
-    PECO_VERSION=v0.5.3 \
+    PECO_VERSION=v0.5.7 \
     BAT_VERSION=0.12.1 \
+    TASK_VERSION=v2.8.0 \
     GOTTY_VERSION=2.0.0-alpha.3 \
-    HOST_USER_NAME=lemp \
     PHP_VERSION=7.4 \
-    NODEJS_VERSION=10 \
+    NODEJS_VERSION=12 \
+    HOST_USER_NAME=lemp \
     HOST_USER_UID=1000 \
     HOST_USER_PASSWORD=123 \
     MYSQL_ROOT_PASSWORD=123 \
@@ -110,7 +111,7 @@ RUN useradd $HOST_USER_NAME -m -u$HOST_USER_UID -Gsudo -s /bin/bash && \
 
 # Install dot files.
 COPY vimrc /etc/vim/vimrc.local 
-COPY vim/colors /etc/vim/colors
+COPY vim/colors/termschool.vim /usr/share/vim/vim81/colors
 COPY gitconfig /etc/gitconfig
 COPY gitignore /etc/gitignore
 COPY config /home/$HOST_USER_NAME/.config
@@ -118,6 +119,8 @@ RUN sed -i "s/%USER%/$HOST_USER_NAME/g" /home/$HOST_USER_NAME/.config/mc/hotlist
     sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /home/$HOST_USER_NAME/.config/mc/hotlist
 COPY bashrc /tmp/bashrc
 RUN cat /tmp/bashrc >> /home/$HOST_USER_NAME/.bashrc && rm /tmp/bashrc
+COPY inputrc.local /etc/inputrc.local
+RUN echo '$include /etc/inputrc.local' >> /etc/inputrc
 
 # Install HR.
 RUN wget https://raw.githubusercontent.com/LuRsT/hr/master/hr && \
@@ -166,6 +169,10 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 RUN mkdir /opt/drupal-coder && \
     COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder && \
     phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
+    
+# Install Drupal Check.
+RUN mkdir /opt/drupal-check && \
+   COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-check require mglaman/drupal-check
 
 # Install Symfony console autocomplete.
 RUN mkdir /opt/symfony-console-autocomplete && \
@@ -173,8 +180,8 @@ RUN mkdir /opt/symfony-console-autocomplete && \
 
 # Install VarDumper Component.
 RUN mkdir /opt/var-dumper && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^4.2 && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^4.2
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^5.0 && \
+    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^5.0
 COPY dumper.php /usr/share/php
 
 # Install PHP coding standards Fixer.
@@ -192,14 +199,11 @@ RUN wget -O /usr/local/bin/drush  https://github.com/drush-ops/drush/releases/do
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
-# Install DrupalRC.
+# Install Drupal RC.
 RUN url=https://raw.githubusercontent.com/Chi-teck/drupalrc/master && \
-    wget -O /etc/drupalrc $url/drupalrc && echo source /etc/drupalrc >> /etc/bash.bashrc && \
-    wget -O /etc/bash_completion.d/drupal.complete.sh $url/drupal.complete.sh && \
-    mkdir /usr/share/drupal-projects && \
-    wget -P /usr/share/drupal-projects $url/drupal-projects/d6.txt && \
-    wget -P /usr/share/drupal-projects $url/drupal-projects/d7.txt && \
-    wget -P /usr/share/drupal-projects $url/drupal-projects/d8.txt
+    wget -O /etc/drupalrc $url/drupalrc && \
+    echo source /etc/drupalrc >> /etc/bash.bashrc && \
+    wget -O /etc/bash_completion.d/drupal.complete.sh $url/drupal.complete.sh
 
 # Install DCG.
 RUN wget -O /usr/local/bin/dcg \
@@ -221,6 +225,11 @@ RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/pe
 # Install Bat.
 RUN wget -P /tmp https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat-musl_${BAT_VERSION}_amd64.deb && \
     sudo dpkg -i /tmp/bat-musl_${BAT_VERSION}_amd64.deb
+
+# Install Task.
+RUN wget -P /tmp https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_amd64.deb && \
+    sudo dpkg -i /tmp/task_linux_amd64.deb
+COPY task.complete.sh /etc/bash_completion.d/task.complete.sh
 
 # Install GoTTY.
 RUN wget -P /tmp https://github.com/yudai/gotty/releases/download/v$GOTTY_VERSION/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz && \
