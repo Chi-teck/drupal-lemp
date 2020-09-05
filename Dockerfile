@@ -66,6 +66,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
     php$PHP_VERSION-cgi \
     php$PHP_VERSION-fpm \
     php$PHP_VERSION-apcu \
+    php$PHP_VERSION-intl \
     php$PHP_VERSION
 
 # Install dumb-init.
