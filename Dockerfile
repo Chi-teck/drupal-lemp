@@ -65,8 +65,8 @@ RUN apt-get update && apt-get -y install --no-install-recommends apt-utils \
     php$PHP_VERSION-mbstring \
     php$PHP_VERSION-cgi \
     php$PHP_VERSION-fpm \
-    php$PHP_VERSION \
-    php$PHP_VERSION-apcu
+    php$PHP_VERSION-apcu \
+    php$PHP_VERSION
 
 # Install dumb-init.
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \
@@ -157,34 +157,41 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 
 # Install Drupal Coder.
 RUN mkdir /opt/drupal-coder && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-coder require drupal/coder && \
+    composer --working-dir=/opt/drupal-coder require drupal/coder && \
+    ln -s /opt/drupal-coder/vendor/bin/phpcs /usr/local/bin/phpcs && \
+    ln -s /opt/drupal-coder/vendor/bin/phpcbf /usr/local/bin/phpcbf && \
     phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
     
 # Install Drupal Check.
 RUN mkdir /opt/drupal-check && \
-   COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/drupal-check require mglaman/drupal-check
+    composer --working-dir=/opt/drupal-check require mglaman/drupal-check  && \
+    ln -s /opt/drupal-check/vendor/bin/drupal-check /usr/local/bin/drupal-check
 
 # Install Symfony console autocomplete.
 RUN mkdir /opt/symfony-console-autocomplete && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master
+    composer --working-dir=/opt/symfony-console-autocomplete require bamarni/symfony-console-autocomplete:dev-master && \
+    ln -s /opt/symfony-console-autocomplete/vendor/bin/symfony-autocomplete /usr/local/bin/symfony-autocomplete
 
 # Install VarDumper Component.
 RUN mkdir /opt/var-dumper && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/var-dumper:^5.0 && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/var-dumper require symfony/console:^5.0
+    composer --working-dir=/opt/var-dumper require symfony/var-dumper:^5.0 && \
+    composer --working-dir=/opt/var-dumper require symfony/console:^5.0 && \
+    ln -s /opt/var-dumper/vendor/bin/var-dump-server /usr/local/bin/var-dump-server
 COPY dumper.php /usr/share/php
 
 # Install PHP coding standards Fixer.
 RUN mkdir /opt/php-cs-fixer && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer
+    composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer && \
+    ln -s /opt/php-cs-fixer/vendor/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
 
 # Install PHPUnit.
 RUN mkdir /opt/phpunit && \
     COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/phpunit require phpunit/phpunit
 
 # Install Drush.
-RUN wget -O /usr/local/bin/drush  https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
-    chmod +x /usr/local/bin/drush
+RUN mkdir /opt/phpunit && \
+    composer --working-dir=/opt/phpunit require phpunit/phpunit && \
+    ln -s /opt/phpunit/vendor/bin/phpunit /usr/local/bin/phpunit
 
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
