@@ -219,9 +219,6 @@ COPY task.complete.sh /etc/bash_completion.d/task.complete.sh
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
 
-# Install NPM tools.
-RUN npm i -g grunt-cli gulp-cli eslint csslint stylelint
-
 # Install Yarn.
 RUN apt-get update && apt-get install -y curl apt-transport-https && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
