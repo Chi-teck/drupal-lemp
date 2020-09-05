@@ -11,7 +11,6 @@ ENV DUMB_INIT_VERSION=1.2.2 \
     PECO_VERSION=v0.5.7 \
     BAT_VERSION=0.15.4 \
     TASK_VERSION=v3.0.0 \
-    GOTTY_VERSION=2.0.0-alpha.3 \
     PHP_VERSION=7.4 \
     NODEJS_VERSION=14 \
     HOST_USER_NAME=lemp \
@@ -231,11 +230,6 @@ RUN wget -P /tmp https://github.com/go-task/task/releases/download/${TASK_VERSIO
     sudo dpkg -i /tmp/task_linux_amd64.deb
 COPY task.complete.sh /etc/bash_completion.d/task.complete.sh
 
-# Install GoTTY.
-RUN wget -P /tmp https://github.com/yudai/gotty/releases/download/v$GOTTY_VERSION/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz && \
-    tar -xvf /tmp/gotty_${GOTTY_VERSION}_linux_amd64.tar.gz -C /tmp && \
-    mv /tmp/gotty /usr/local/bin/gotty && \
-    chmod +x /usr/local/bin/gotty
 
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
