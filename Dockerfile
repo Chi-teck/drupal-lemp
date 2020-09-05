@@ -186,10 +186,10 @@ RUN mkdir /opt/php-cs-fixer && \
     ln -s /opt/php-cs-fixer/vendor/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
 
 # Install Drush.
-RUN mkdir /opt/phpunit && \
-    composer --working-dir=/opt/phpunit require phpunit/phpunit && \
-    ln -s /opt/phpunit/vendor/bin/phpunit /usr/local/bin/phpunit
-
+RUN wget -O /usr/local/bin/drush \
+    https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && \
+    chmod +x /usr/local/bin/drush
+COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 # Enable drush completion.
 COPY drush.complete.sh /etc/bash_completion.d/drush.complete.sh
 
@@ -218,7 +218,6 @@ RUN wget -P /tmp https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION
 RUN wget -P /tmp https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_amd64.deb && \
     sudo dpkg -i /tmp/task_linux_amd64.deb
 COPY task.complete.sh /etc/bash_completion.d/task.complete.sh
-
 
 # Install Node.js and NPM.
 RUN curl -sL https://deb.nodesource.com/setup_$NODEJS_VERSION.x | bash - && apt-get install -y nodejs
