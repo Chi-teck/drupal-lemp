@@ -1,3 +1,7 @@
+if [[ -d $HOME/.composer/vendor/bin ]]; then
+  export PATH=$PATH:$HOME/.composer/vendor/bin
+fi
+
 # Task wrapper that searches for task file recursively.
 function task {
 
