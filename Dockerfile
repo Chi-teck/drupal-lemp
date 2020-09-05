@@ -8,7 +8,6 @@ ENV DUMB_INIT_VERSION=1.2.2 \
     ADMINER_VERSION=4.7.6 \
     MAILHOG_VERSION=v1.0.1 \
     MHSENDMAIL_VERSION=v0.2.0 \
-    PECO_VERSION=v0.5.7 \
     BAT_VERSION=0.15.4 \
     TASK_VERSION=v3.0.0 \
     PHP_VERSION=7.4 \
@@ -214,12 +213,6 @@ RUN SHELL=/bin/bash symfony-autocomplete dcg  > /etc/bash_completion.d/dcg_compl
 
 # Install Composer completions.
 RUN SHELL=/bin/bash symfony-autocomplete composer  > /etc/bash_completion.d/dcomposer_complete.sh
-
-# Install Peco.
-RUN wget -P /tmp https://github.com/peco/peco/releases/download/$PECO_VERSION/peco_linux_amd64.tar.gz && \
-    tar -xvf /tmp/peco_linux_amd64.tar.gz -C /tmp && \
-    mv /tmp/peco_linux_amd64/peco /usr/local/bin/peco && \
-    chmod +x /usr/local/bin/peco
 
 # Install Bat.
 RUN wget -P /tmp https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat-musl_${BAT_VERSION}_amd64.deb && \
