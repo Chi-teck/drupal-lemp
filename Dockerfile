@@ -5,7 +5,6 @@ ENV DUMB_INIT_VERSION=1.2.2 \
     DRUSH_VERSION=8.4.1 \
     DCG_VERSION=2.0.0-RC2 \
     PHPMYADMIN_VERSION=5.0.1 \
-    ADMINER_VERSION=4.7.6 \
     MAILHOG_VERSION=v1.0.1 \
     MHSENDMAIL_VERSION=v0.2.0 \
     BAT_VERSION=0.15.4 \
@@ -152,13 +151,6 @@ RUN sed -i "s/root_pass/$MYSQL_ROOT_PASSWORD/" /usr/share/phpmyadmin/config.inc.
 COPY sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmin && \
     ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
-
-# Install Adminer.
-RUN mkdir /usr/share/adminer && \
-    wget -O /usr/share/adminer/adminer.php https://www.adminer.org/static/download/$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
-COPY sites-available/adminer /etc/nginx/sites-available/adminer
-RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/adminer && \
-    ln -s /etc/nginx/sites-available/adminer /etc/nginx/sites-enabled/adminer
 
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
