@@ -156,11 +156,11 @@ RUN sed -i "s/%PHP_VERSION%/$PHP_VERSION/g" /etc/nginx/sites-available/phpmyadmi
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Install Drupal Coder.
-RUN mkdir /opt/drupal-coder && \
-    composer --working-dir=/opt/drupal-coder require drupal/coder && \
-    ln -s /opt/drupal-coder/vendor/bin/phpcs /usr/local/bin/phpcs && \
-    ln -s /opt/drupal-coder/vendor/bin/phpcbf /usr/local/bin/phpcbf && \
-    phpcs --config-set installed_paths /opt/drupal-coder/vendor/drupal/coder/coder_sniffer
+RUN mkdir /opt/drupalcs
+RUN composer --working-dir=/opt/drupalcs require squizlabs/php_codesniffer drupal/coder chi-teck/drupal-coder-extension && \
+    ln -s /opt/drupalcs/vendor/bin/phpcs /usr/local/bin/phpcs && \
+    ln -s /opt/drupalcs/vendor/bin/phpcbf /usr/local/bin/phpcbf && \
+    phpcs --config-set installed_paths /opt/drupalcs/vendor/drupal/coder/coder_sniffer,/opt/drupalcs/vendor/chi-teck/drupal-coder-extension
     
 # Install Drupal Check.
 RUN mkdir /opt/drupal-check && \
