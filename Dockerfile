@@ -185,10 +185,6 @@ RUN mkdir /opt/php-cs-fixer && \
     composer --working-dir=/opt/php-cs-fixer require friendsofphp/php-cs-fixer && \
     ln -s /opt/php-cs-fixer/vendor/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
 
-# Install PHPUnit.
-RUN mkdir /opt/phpunit && \
-    COMPOSER_BIN_DIR=/usr/local/bin composer --working-dir=/opt/phpunit require phpunit/phpunit
-
 # Install Drush.
 RUN mkdir /opt/phpunit && \
     composer --working-dir=/opt/phpunit require phpunit/phpunit && \
